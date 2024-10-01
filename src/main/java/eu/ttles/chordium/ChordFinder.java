@@ -17,8 +17,8 @@ public class ChordFinder {
     //array of stings (notes on each string) STRING ARE COUNTED FROM 0 (lowest to highest)
     private ArrayList<InstrumetString> instrumentStrings = new ArrayList<>();
 
-    private int numberOfStrings;
-    private int numberOfFrets;
+    private final int numberOfStrings;
+    private final int numberOfFrets;
 
     public ChordFinder(String base, String type, int numberOfStrings, int numberOfFrets, ArrayList<String> instrumentTuning) {
         this.numberOfStrings = numberOfStrings;
@@ -98,7 +98,6 @@ public class ChordFinder {
     private void generateStrings(int numberOfStrings, int numberOfFrets, ArrayList<String> instrumentTuning){
         for(String stringTuning : instrumentTuning){
             if(Arrays.asList(tones).contains(stringTuning)){
-
                 InstrumetString newString = new InstrumetString(stringTuning, numberOfFrets);
                 instrumentStrings.add(newString);
             }else{

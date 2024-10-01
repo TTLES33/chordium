@@ -25,6 +25,7 @@ class ChordTest {
         chord.addTone(4);
         chord.addTone(5);
         chord.addTone(6);
+
         ArrayList<Integer> tonesList = new ArrayList<>(List.of(1,2,3,4,5,6));
         assertEquals(tonesList, chord.getTonePositions());
     }

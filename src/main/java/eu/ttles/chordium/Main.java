@@ -16,12 +16,14 @@ public class Main {
         tuning.add("B");
         tuning.add("E");
 
-        ChordFinder gdur = new ChordFinder("G", "major", 6,15, tuning);
+        //ChordFinder gdur = new ChordFinder("G", "major", 6,15, tuning);
 
 
 
-        gdur.printChords();
+        //gdur.printChords();
 
+        ChordNotationCreator chordNotationCreator = new ChordNotationCreator();
+        System.out.println(chordNotationCreator.getTonesByChordName("C","7"));
 
 
     }

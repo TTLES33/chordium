@@ -6,9 +6,8 @@ import java.util.Collections;
 public class Chord implements Comparable<Chord>{
 
     //fret positions of each tone (all strings)
-    //private int[] tonesPositions;
     ArrayList<Integer> tonesPositions;
-    private int position = 1;
+    private int position = 1; //position of chord on fretboard
 
     private int barrePosition = 0;
     private int barreStartString = 0;
@@ -17,7 +16,7 @@ public class Chord implements Comparable<Chord>{
 
     private int chordWidth = 3;
 
-    private int numberOfStrings;
+    private final int numberOfStrings;
 
 
 
@@ -29,15 +28,14 @@ public class Chord implements Comparable<Chord>{
 
     //adds tone to the chord
     public void addTone(int tonePosition){
+        //check if number of already added tones is less than number of strings
         if(this.tonesPositions.size() < this.numberOfStrings){
-            this.tonesPositions.add(tonePosition);
 
+            this.tonesPositions.add(tonePosition);
             if(isComplete()){
                 this.findBarre();
                 this.findChordWidth();
             }
-
-
         }else{
             throw new IllegalArgumentException("Tones out of bounds, trying to set tone on string number " + (this.tonesPositions.size() + 1) + ", number of strings: " + this.numberOfStrings);
         }
@@ -63,18 +61,19 @@ public class Chord implements Comparable<Chord>{
             return false;
         }
 
+        //number of empty strings
         int emptyStrings = (int) tonesPositions.stream().filter(m -> m == 0).count();
 
+        //number of non-played strings
         int skippedStrings = (int) tonesPositions.stream().filter(m -> m == -1).count();
 
         int barreNumberOfSoundingStringsFingers = barreNumberOfPlayedStrings;
-
         if(barreNumberOfPlayedStrings > 0){
             barreNumberOfSoundingStringsFingers = barreNumberOfPlayedStrings - 1;
         }
 
 
-        if((this.numberOfStrings - skippedStrings - barreNumberOfSoundingStringsFingers - emptyStrings) > 4){
+        if((this.numberOfStrings - skippedStrings - barreNumberOfSoundingStringsFingers - emptyStrings) > 4){ //4 fingers to play chord
             return false;
         }
         return true;
@@ -110,11 +109,13 @@ public class Chord implements Comparable<Chord>{
         if(!isComplete()){
             throw new RuntimeException("Chord not complete");
         }
+
         int minPostition = this.tonesPositions.getFirst();
         int maxPostition = this.tonesPositions.getFirst();
 
         for(int i = 1; i <this.tonesPositions.size(); i++){
 
+            //if actual position < previous minPosition and it is > 0 or minPosition is non-played string
             if(this.tonesPositions.get(i) < minPostition && this.tonesPositions.get(i) >= 0   ||  minPostition == -1) {
                 minPostition = this.tonesPositions.get(i);
             }
