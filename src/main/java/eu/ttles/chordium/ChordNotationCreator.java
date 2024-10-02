@@ -9,7 +9,7 @@ public class ChordNotationCreator {
 
     HashMap<String, int[]> notationMap;
 
-    //TODO: TESTS
+    //TODO: HANDLE 9x intervals
     public ChordNotationCreator() {
         //add all types to hashmap with intervals
         this.notationMap = new HashMap<>();
@@ -83,7 +83,7 @@ public class ChordNotationCreator {
 
         //split string to base and type
         String base = chordName.substring(0, 1);
-        String type = chordName.substring(1, chordName.length()-1);
+        String type = chordName.substring(1);
 
         //call parent function
         return this.getTonesByChordName(base, type);
