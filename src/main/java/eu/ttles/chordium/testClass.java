@@ -6,15 +6,18 @@ public class testClass {
 
 
     public static void main(String[] args) {
-     boolean test1 = true;
-     boolean test2 = false;
-     boolean test3 = test1 && test2;
-        System.out.println(test3);
+
+        ChordNotationCreator chordNotationCreator = new ChordNotationCreator();
+
+
+        System.out.println("test");
+        chordNotationCreator.generateTonesByChordName("C", "maj13");
+        chordNotationCreator.printWorkingChordTones();
+        System.out.println("------");
+        chordNotationCreator.printActualChordTones();
+
 
 
     }
-    public static void recursiveFunction(ArrayList<String> list, int itteratiopn) {
 
-
-    }
 }

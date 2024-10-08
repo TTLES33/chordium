@@ -11,44 +11,75 @@ import static org.junit.jupiter.api.Assertions.*;
 class ChordNotationCreatorTest {
 
     @Test
-    @DisplayName("getTonesByChordName C maj")
-    void getTonesByChordNameCmaj() {
+    @DisplayName("generateTonesByChordName C maj")
+    void generateTonesByChordNameCmaj() {
         ChordNotationCreator chordNotationCreator = new ChordNotationCreator();
+        chordNotationCreator.generateTonesByChordName("C", "maj");
+
         ArrayList<String> tones = new ArrayList<>(List.of("C","E","G"));
-        assertEquals(tones, chordNotationCreator.getTonesByChordName("C", "maj"));
+        ArrayList<ArrayList<String>> container = new ArrayList<>();
+        container.add(tones);
+
+        assertEquals(container, chordNotationCreator.getActualChordTones());
     }
     @Test
-    @DisplayName("getTonesByChordName G min, with lowe/upper case different")
-    void getTonesByChordNameWithOneString() {
+    @DisplayName("generateTonesByChordName C min")
+    void generateTonesByChordNameWithOneString() {
         ChordNotationCreator chordNotationCreator = new ChordNotationCreator();
-        ArrayList<String> tones = new ArrayList<>(List.of("G","A#","D"));
-        assertEquals(tones, chordNotationCreator.getTonesByChordName("gMIN"));
+        chordNotationCreator.generateTonesByChordName("cmin");
+
+        ArrayList<String> tones = new ArrayList<>(List.of("C","Eb","G"));
+        ArrayList<ArrayList<String>> container = new ArrayList<>();
+        container.add(tones);
+
+        assertEquals(container, chordNotationCreator.getActualChordTones());
     }
+
     @Test
-    @DisplayName("getTonesByChordName G maj7, with overflow")
-    void getTonesByChordNameGmaj7Overflow() {
+    @DisplayName("generateTonesByChordName C min (working intervals)")
+    void generateTonesByChordNameWithOneStringWorkingIntervals() {
         ChordNotationCreator chordNotationCreator = new ChordNotationCreator();
+        chordNotationCreator.generateTonesByChordName("cmin");
+
+        ArrayList<String> tones = new ArrayList<>(List.of("C","D#","G"));
+        ArrayList<ArrayList<String>> container = new ArrayList<>();
+        container.add(tones);
+
+        assertEquals(container, chordNotationCreator.getWorkingChordTones());
+    }
+
+
+    @Test
+    @DisplayName("generateTonesByChordName G maj7, with overflow")
+    void generateTonesByChordNameGmaj7Overflow() {
+        ChordNotationCreator chordNotationCreator = new ChordNotationCreator();
+        chordNotationCreator.generateTonesByChordName("G", "maj7");
+
+
         ArrayList<String> tones = new ArrayList<>(List.of("G", "B", "D", "F#"));
-        assertEquals(tones, chordNotationCreator.getTonesByChordName("G", "maj7"));
+        ArrayList<ArrayList<String>> container = new ArrayList<>();
+        container.add(tones);
+
+        assertEquals(container, chordNotationCreator.getWorkingChordTones());
     }
     @Test
-    @DisplayName("getTonesByChordName bad base")
-    void getTonesByChordNameBadName() {
+    @DisplayName("generateTonesByChordName bad base")
+    void generateTonesByChordNameBadName() {
         ChordNotationCreator chordNotationCreator = new ChordNotationCreator();
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> chordNotationCreator.getTonesByChordName("X", "maj"));
-        assertEquals("type/base not accepted", exception.getMessage());
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> chordNotationCreator.generateTonesByChordName("X", "maj"));
+        assertEquals("base not accepted", exception.getMessage());
     }
 
     @Test
-    @DisplayName("getTonesByChordName bad type")
-    void getTonesByChordNameBadType() {
+    @DisplayName("generateTonesByChordName bad type")
+    void generateTonesByChordNameBadType() {
         ChordNotationCreator chordNotationCreator = new ChordNotationCreator();
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> chordNotationCreator.getTonesByChordName("C", "test"));
-        assertEquals("type/base not accepted", exception.getMessage());
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> chordNotationCreator.generateTonesByChordName("C", "test"));
+        assertEquals("type not accepted", exception.getMessage());
     }
 
 
     @Test
-    void testGetTonesByChordName() {
+    void testgenerateTonesByChordName() {
     }
 }

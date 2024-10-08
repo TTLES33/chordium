@@ -23,7 +23,8 @@ public class Main {
         //gdur.printChords();
 
         ChordNotationCreator chordNotationCreator = new ChordNotationCreator();
-        System.out.println(chordNotationCreator.getTonesByChordName("C","7"));
+        chordNotationCreator.generateTonesByChordName("C","m7add4");
+        chordNotationCreator.printActualChordTones();
 
 
     }
