@@ -20,6 +20,7 @@ public class ChordNotationCreator {
         this.chordPatternsSet = new HashSet<>();
 
         //add all interval short names with number of semitones
+        //Minor, major,or perfect intervals
         this.intervalsNames = new HashMap<String, Integer>();
         this.intervalsNames.put("1P", 0);
         this.intervalsNames.put("2m", 1);
@@ -44,6 +45,37 @@ public class ChordNotationCreator {
         this.intervalsNames.put("14m", 22);
         this.intervalsNames.put("14M", 23);
         this.intervalsNames.put("15P", 24);
+
+        //Augmented or diminished intervals
+        this.intervalsNames.put("2d", 0);
+        this.intervalsNames.put("1A", 1);
+        this.intervalsNames.put("3d", 2);
+        this.intervalsNames.put("2A", 3);
+        this.intervalsNames.put("4d", 4);
+        this.intervalsNames.put("3A", 5);
+        this.intervalsNames.put("4A", 6);
+        this.intervalsNames.put("5d", 6);
+        this.intervalsNames.put("6d", 7);
+        this.intervalsNames.put("5A", 8);
+        this.intervalsNames.put("7d", 9);
+        this.intervalsNames.put("6A", 10);
+        this.intervalsNames.put("8d", 11);
+        this.intervalsNames.put("7A", 12);
+        this.intervalsNames.put("9d", 12);
+        this.intervalsNames.put("8A", 13);
+        this.intervalsNames.put("10d", 14);
+        this.intervalsNames.put("9A", 15);
+        this.intervalsNames.put("11d", 16);
+        this.intervalsNames.put("10A", 17);
+        this.intervalsNames.put("11A", 18);
+        this.intervalsNames.put("12d", 18);
+        this.intervalsNames.put("13d", 19);
+        this.intervalsNames.put("12A", 20);
+        this.intervalsNames.put("14d", 21);
+        this.intervalsNames.put("13A", 22);
+        this.intervalsNames.put("15d", 23);
+        this.intervalsNames.put("14A", 24);
+        this.intervalsNames.put("15A", 25);
 
         loadChordIntervalsFromFile();
     }
