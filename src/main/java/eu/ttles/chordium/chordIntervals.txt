@@ -1,11 +1,11 @@
-major,M,^,maj
+major,M,^,maj,
 1P 3M 5P
 major seventh,maj7,Δ,ma7,M7,Maj7,^7
 1P 3M 5P 7M
 major ninth,maj9,Δ9,^9
 1P 3M 5P 7M 9M
 major thirteenth,maj13,Maj13,^13
-1P 3M 5P 7M 9M 13M
+1P 3M 5P 7M -9M 13M
 sixth,6,add6,add13,M6
 1P 3M 5P 6M
 sixth added ninth,6add9,6/9,69,M69

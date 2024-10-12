@@ -2,6 +2,8 @@ package eu.ttles.chordium;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
 
 public class Chord implements Comparable<Chord>{
 
@@ -53,10 +55,11 @@ public class Chord implements Comparable<Chord>{
 
     //check if chord is physically possible to play
     public boolean isPlayable(int maxWidth){
-
         if(!isComplete()){
             return false;
         }
+
+        findChordWidth();
         if(this.chordWidth > maxWidth){
             return false;
         }
@@ -76,32 +79,52 @@ public class Chord implements Comparable<Chord>{
         if((this.numberOfStrings - skippedStrings - barreNumberOfSoundingStringsFingers - emptyStrings) > 4){ //4 fingers to play chord
             return false;
         }
+        //System.out.println(true);
         return true;
 
     }
 
     //check if the cord is musically correct
     //arguments: tones - tones which the cord should have, instrumentStrings
-    public boolean isCorrect(ArrayList<String> tones, ArrayList<InstrumetString> instrumetStrings){
+    public boolean isCorrect(ArrayList<ArrayList<String>> tonesChordShouldHave, ArrayList<InstrumetString> instrumetStrings){
+
         if(!isComplete()){
+            System.out.println("Not Complete");
             return false;
         }
-        boolean correct = true;
 
-        //loop through all tones(strings) of created chord
+        //generate array of tones(strings) from int positions
+        ArrayList<String> generatedTones = new ArrayList<>();
         for(int i = 0; i < tonesPositions.size(); i++){
+            //skip non played strings
             if(tonesPositions.get(i) != -1){
-
-                //get note by position on string
-                String toneByPosition = instrumetStrings.get(i).findToneByPosition(tonesPositions.get(i));
-
-                //check if chord should have the tone
-                if(!tones.contains(toneByPosition)){
-                    correct = false;
-                }
+                generatedTones.add(instrumetStrings.get(i).findToneByPosition(tonesPositions.get(i)));
             }
         }
-        return correct;
+
+        //hashset of unique generated tones
+        HashSet<String> uniqueElements = new HashSet<>(generatedTones);
+
+
+//        System.out.println("tonesChordShouldHave: " + tonesChordShouldHave);
+//        System.out.println("generatedTones: " + generatedTones);
+//        System.out.println("uniqueElements: " + uniqueElements);
+//        System.out.println("tonesPositions: " + tonesPositions);
+
+        // Iterate over each sublist in tonesChordShouldHave
+        for (ArrayList<String> sublist : tonesChordShouldHave) {
+
+            // Check if the current sublist contains all elements from uniqueElements and vise versa
+            if (sublist.containsAll(uniqueElements) && uniqueElements.containsAll(sublist)) {
+                //System.out.println(true);
+                return true; // If all elements are found in a sublist, return true
+
+            }
+        }
+
+       //System.out.println(false);
+        return false;
+
     }
 
     //finds width of chord on fretboard
@@ -116,7 +139,7 @@ public class Chord implements Comparable<Chord>{
         for(int i = 1; i <this.tonesPositions.size(); i++){
 
             //if actual position < previous minPosition and it is > 0 or minPosition is non-played string
-            if(this.tonesPositions.get(i) < minPostition && this.tonesPositions.get(i) >= 0   ||  minPostition == -1) {
+            if((this.tonesPositions.get(i) < minPostition && this.tonesPositions.get(i) > 0)   ||  minPostition == -1) {
                 minPostition = this.tonesPositions.get(i);
             }
             if(this.tonesPositions.get(i) > maxPostition){
@@ -147,7 +170,7 @@ public class Chord implements Comparable<Chord>{
 
         if(tonesPositionsCopy.get(0) != 0 && tonesPositionsCopy.get(1) == tonesPositionsCopy.get(0)){
             this.barrePosition = tonesPositionsCopy.get(0);
-            this.barreNumberOfPlayedStrings = (int) tonesPositions.stream().filter(m -> m == tonesPositionsCopy.get(0)).count();
+            this.barreNumberOfPlayedStrings = (int) tonesPositions.stream().filter(m -> Objects.equals(m, tonesPositionsCopy.get(0))).count();
             for(int i = 0; i < this.tonesPositions.size(); i++ ){
                 if(this.tonesPositions.get(i) == this.barrePosition){
                         this.barreStartString = i;
@@ -210,6 +233,8 @@ public class Chord implements Comparable<Chord>{
     public int compareTo(Chord o) {
         if(this.position > o.position){
             return 1;
+        }else if(this.position < o.position){
+            return -1;
         }
         return 0;
     }

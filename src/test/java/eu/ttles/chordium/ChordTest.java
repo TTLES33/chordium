@@ -265,7 +265,9 @@ class ChordTest {
         chord.addTone(3);
 
 
-        ArrayList<String> chordTones = new ArrayList<>(List.of("B","G","D"));
+        ArrayList<ArrayList<String>> chordTones = new ArrayList<>();
+        chordTones.add(new ArrayList<>(List.of("B","G","D")));
+
         ArrayList<InstrumetString> instrumetStrings = new ArrayList<>();
 
         InstrumetString newString1 = new InstrumetString("E", 15);
@@ -296,8 +298,10 @@ class ChordTest {
         chord.addTone(0);
         chord.addTone(3);
 
+        ArrayList<ArrayList<String>> chordTones = new ArrayList<>();
+        chordTones.add(new ArrayList<>(List.of("B","G","D")));
 
-        ArrayList<String> chordTones = new ArrayList<>(List.of("B","G","D"));
+        //ArrayList<String> chordTones = new ArrayList<>(List.of("B","G","D"));
         ArrayList<InstrumetString> instrumetStrings = new ArrayList<>();
 
         InstrumetString newString1 = new InstrumetString("E", 15);
@@ -328,7 +332,10 @@ class ChordTest {
         chord.addTone(7);
 
 
-        ArrayList<String> chordTones = new ArrayList<>(List.of("B","G","D"));
+
+
+        ArrayList<ArrayList<String>> chordTones = new ArrayList<>();
+        chordTones.add(new ArrayList<>(List.of("B","G","D")));
         ArrayList<InstrumetString> instrumetStrings = new ArrayList<>();
 
         InstrumetString newString1 = new InstrumetString("E", 15);
@@ -360,7 +367,8 @@ class ChordTest {
         chord.addTone(-1);
 
 
-        ArrayList<String> chordTones = new ArrayList<>(List.of("B","G","D"));
+        ArrayList<ArrayList<String>> chordTones = new ArrayList<>();
+        chordTones.add(new ArrayList<>(List.of("B","G","D")));
         ArrayList<InstrumetString> instrumetStrings = new ArrayList<>();
 
         InstrumetString newString1 = new InstrumetString("E", 15);

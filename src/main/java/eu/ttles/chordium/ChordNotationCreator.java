@@ -10,10 +10,12 @@ public class ChordNotationCreator {
     //hashmap of english short interval names with corresponding number of semitones
     private final HashMap<String, Integer> intervalsNames;
     //Set of chord patterns (names, intervals, aliases)
-    private HashSet<chordPattern> chordPatternsSet;
+    private final HashSet<chordPattern> chordPatternsSet;
 
-    private ArrayList<ArrayList<String>> chordActualTones = new ArrayList<>();
-    private ArrayList<ArrayList<String>> chordWorkingTones = new ArrayList<>();
+    private final ArrayList<ArrayList<String>> chordActualTones = new ArrayList<>();
+    private final ArrayList<ArrayList<String>> chordWorkingTones = new ArrayList<>();
+    private final ArrayList<String> aliases = new ArrayList<>();
+
 
     public ChordNotationCreator() {
 
@@ -21,7 +23,7 @@ public class ChordNotationCreator {
 
         //add all interval short names with number of semitones
         //Minor, major,or perfect intervals
-        this.intervalsNames = new HashMap<String, Integer>();
+        this.intervalsNames = new HashMap<>();
         this.intervalsNames.put("1P", 0);
         this.intervalsNames.put("2m", 1);
         this.intervalsNames.put("2M", 2);
@@ -110,8 +112,10 @@ public class ChordNotationCreator {
                     //than add 100 to the interval number (can be omitted)
                     if(intervalData.startsWith("-")){
                         intervalData = intervalData.substring(1);
+                        //System.out.println("1:" + intervalData);
                         intervalIntValue = intervalsNames.get(intervalData) + 100;
                     }else{
+                        //System.out.println("2:" + intervalData);
                         intervalIntValue = intervalsNames.get(intervalData);
                     }
 
@@ -136,6 +140,10 @@ public class ChordNotationCreator {
     public void generateTonesByChordName(String base, String type) throws IllegalArgumentException{
 
         base = base.toUpperCase();
+
+        if(type.isEmpty()){
+            type = "maj";
+        }
        // type = type.toLowerCase(); //todo: handle all cases
 
         //if base is correct
@@ -144,7 +152,7 @@ public class ChordNotationCreator {
             boolean chordTypeExists = false;
             //if type exists
             for(chordPattern pattern : chordPatternsSet){
-                System.out.println(pattern.getAliases());
+
                 if(pattern.hasAlias(type)){
                     //get intervals
                     int[] tonesIntervals = pattern.getIntervals();
@@ -155,7 +163,7 @@ public class ChordNotationCreator {
             }
             //type not found
             if(!chordTypeExists){
-                System.out.println(type);
+                //System.out.println(type);
                 throw new IllegalArgumentException("type not accepted");
             }
         //base not found
@@ -181,8 +189,6 @@ public class ChordNotationCreator {
 
         //tones of chord correctly named (only flats)
         ArrayList<String> localChordActualTones = new ArrayList<>();
-        //tones of chord for chordium program (only sharps)
-        ArrayList<String> localChordWorkingTones = new ArrayList<>();
 
         //find index of base tone in tones array
         int firstIndex = 0;
@@ -271,5 +277,8 @@ public class ChordNotationCreator {
     }
     public ArrayList<ArrayList<String>> getWorkingChordTones(){
         return this.chordWorkingTones;
+    }
+    public ArrayList<String> getAliases(){
+        return this.aliases;
     }
 }

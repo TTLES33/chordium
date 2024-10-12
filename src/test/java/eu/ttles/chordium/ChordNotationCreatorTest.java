@@ -23,6 +23,34 @@ class ChordNotationCreatorTest {
         assertEquals(container, chordNotationCreator.getActualChordTones());
     }
     @Test
+    @DisplayName("generateTonesByChordName C (maj not specified)")
+    void generateTonesByChordNameCmaj_typeNotSpecified() {
+        ChordNotationCreator chordNotationCreator = new ChordNotationCreator();
+        chordNotationCreator.generateTonesByChordName("C");
+
+        ArrayList<String> tones = new ArrayList<>(List.of("C","E","G"));
+        ArrayList<ArrayList<String>> container = new ArrayList<>();
+        container.add(tones);
+
+        assertEquals(container, chordNotationCreator.getActualChordTones());
+    }
+
+    @Test
+    @DisplayName("generateTonesByChordName C maj13 (skipped tones)")
+    void generateTonesByChordNameCmaj13() {
+        ChordNotationCreator chordNotationCreator = new ChordNotationCreator();
+        chordNotationCreator.generateTonesByChordName("C", "maj13");
+
+        ArrayList<String> tones = new ArrayList<>(List.of("C","E","G","B","A"));
+        ArrayList<String> tones2 = new ArrayList<>(List.of("C","E","G","B","D", "A"));
+        ArrayList<ArrayList<String>> container = new ArrayList<>();
+        container.add(tones2);
+        container.add(tones);
+
+        assertEquals(container, chordNotationCreator.getActualChordTones());
+    }
+
+    @Test
     @DisplayName("generateTonesByChordName C min")
     void generateTonesByChordNameWithOneString() {
         ChordNotationCreator chordNotationCreator = new ChordNotationCreator();

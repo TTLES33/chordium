@@ -73,6 +73,7 @@ public class InstrumetString {
     }
     public void printString(){
         thisString.stream().forEach(o -> System.out.print(o + "   "));
+        System.out.println();
     }
 
 

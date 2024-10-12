@@ -1,13 +1,11 @@
 package eu.ttles.chordium;
-
-
 import java.util.ArrayList;
-
 
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("test");
+
+
         ArrayList<String> tuning = new ArrayList<>();
         tuning.add("E");
         tuning.add("A");
@@ -16,16 +14,15 @@ public class Main {
         tuning.add("B");
         tuning.add("E");
 
-        //ChordFinder gdur = new ChordFinder("G", "major", 6,15, tuning);
 
+        ChordFinder chordFinder = new ChordFinder();
 
+        chordFinder.findChord("C", 6,15, tuning);
+        chordFinder.printChords();
 
-        //gdur.printChords();
-
-        ChordNotationCreator chordNotationCreator = new ChordNotationCreator();
-        chordNotationCreator.generateTonesByChordName("C","m7add4");
-        chordNotationCreator.printActualChordTones();
-
+        System.out.println("--------G7--------------");
+        chordFinder.findChord("G","7", 6,15, tuning);
+        chordFinder.printChords();
 
     }
 }

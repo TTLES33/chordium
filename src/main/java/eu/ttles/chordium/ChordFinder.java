@@ -9,23 +9,58 @@ public class ChordFinder {
     private final String[] tones = {"G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#"};
 
     //array of generated chords
-    private ArrayList<Chord> chords = new ArrayList<>();
+    private ArrayList<Chord> chords;
 
     //array of needed tones to form a chord
-    private ArrayList<String> chordTones = new ArrayList<>();
+    private ArrayList<ArrayList<String>> chordTones ;
 
     //array of stings (notes on each string) STRING ARE COUNTED FROM 0 (lowest to highest)
-    private ArrayList<InstrumetString> instrumentStrings = new ArrayList<>();
+    private ArrayList<InstrumetString> instrumentStrings;
 
-    private final int numberOfStrings;
-    private final int numberOfFrets;
+    private int numberOfStrings;
+    private int numberOfFrets;
+    private ArrayList<String> aliases;
 
-    public ChordFinder(String base, String type, int numberOfStrings, int numberOfFrets, ArrayList<String> instrumentTuning) {
+    private final ChordNotationCreator chordNotationCreator;
+
+
+    public ChordFinder() {
+        this.chordNotationCreator = new ChordNotationCreator();
+    }
+
+
+    public void findChord(String base, String type, int numberOfStrings, int numberOfFrets, ArrayList<String> instrumentTuning){
         this.numberOfStrings = numberOfStrings;
         this.numberOfFrets = numberOfFrets;
+        this.chords = new ArrayList<>();
+        this.chordTones = new ArrayList<>();
+        this.instrumentStrings = new ArrayList<>();
+
+
 
         //get tones to form a chord
-        this.generateChordNotes(base, type);
+        try {
+            if(type.isBlank()){
+                chordNotationCreator.generateTonesByChordName(base);
+            }else{
+                chordNotationCreator.generateTonesByChordName(base, type);
+            }
+
+            chordTones = chordNotationCreator.getWorkingChordTones();
+            this.aliases = chordNotationCreator.getAliases();
+
+
+
+        }catch (Exception e) {
+            if(e.getMessage().equals("base not accepted")){
+                System.out.println("base not accepted");
+            } else if (e.getMessage().equals("type not accepted")) {
+                System.out.println("type not accepted");
+            }else{
+                System.out.println(e.getMessage());
+            }
+        }
+
 
         //generate tones of each string
         this.generateStrings(numberOfStrings, numberOfFrets, instrumentTuning);
@@ -37,22 +72,27 @@ public class ChordFinder {
             for(int j = 0; j < i; j++){
                 frets.add(-1);
             }
-            this.findAllChords(chordTones, i, frets);
+            for(ArrayList<String> chordTonesArray : chordTones){
+                this.findAllChords(chordTonesArray, i, frets);
+            }
         }
 
 
     }
+    public void findChord(String basePlusType, int numberOfStrings, int numberOfFrets, ArrayList<String> instrumentTuning){
+        this.findChord(basePlusType,"", numberOfStrings, numberOfFrets, instrumentTuning);
+    }
+
+
     //todo: možná rozdělit na podfunkce
     //find all possible combinations of chord by recursively calling itself (finds all possible tones on a string and call itself on the next string)
-    private void findAllChords(ArrayList<String> tonesInChord, int actualInstrumentString, ArrayList<Integer> frets){
-
-        //actualInstrumentString = string on which is function currently searching
-        if(actualInstrumentString < this.numberOfStrings){
-            InstrumetString actualString = instrumentStrings.get(actualInstrumentString);
+    private void findAllChords(ArrayList<String> tonesInChord, int currentInstrumentString, ArrayList<Integer> frets){
+        //currentInstrumentString = string on which is function currently searching
+        if(currentInstrumentString < this.numberOfStrings){
+            InstrumetString actualString = instrumentStrings.get(currentInstrumentString);
 
             //loop through every tone in chord
             for(String chordTone : tonesInChord){
-                //System.out.println(chordTone);
 
                 //find every position on current string for current tone (chordTone)
                 ArrayList<Integer> actualTonesPositions = actualString.findTones(chordTone);
@@ -60,39 +100,37 @@ public class ChordFinder {
                 //loop through all positions
                 for(int actualTonePosition : actualTonesPositions){
 
-                    //copy array of previos positions to be passed as argument
+                    //copy array of previous positions to be passed as argument
                     ArrayList<Integer> newFrets = new ArrayList<>(frets);
-                    int newString = actualInstrumentString + 1;
+                    int newString = currentInstrumentString + 1;
 
                     newFrets.add(actualTonePosition);
                     findAllChords(tonesInChord, newString, newFrets);
                 }
             }
         }else{
-            //create chord object and add it array
-            Chord newChord = new Chord(numberOfStrings);
-            for(int fretPosition : frets){
-                newChord.addTone(fretPosition);
-            }
-
-            //chords.add(newChord);
-            if(newChord.isPlayable(4) && newChord.isCorrect(chordTones, instrumentStrings)){
-                chords.add(newChord);
-            }
-
+            this.createNewChord(numberOfStrings, frets);
         }
 
     }
 
+    //create chord object and add it array
+    private void createNewChord(int numberOfStrings, ArrayList<Integer> frets){
 
-    //generate all notes, chord should have
-    private void generateChordNotes(String base, String type){
-        if(base.equals("G") && type.equals("major")){
-            this.chordTones.add("G");
-            this.chordTones.add("B");
-            this.chordTones.add("D");
+
+        Chord newChord = new Chord(numberOfStrings);
+
+        for(int fretPosition : frets){
+            newChord.addTone(fretPosition);
+        }
+
+
+
+        if(newChord.isPlayable(4) && newChord.isCorrect(chordTones, instrumentStrings)){
+            chords.add(newChord);
         }
     }
+
 
     //generate array of InstrumentStrings, based on the tuning
     private void generateStrings(int numberOfStrings, int numberOfFrets, ArrayList<String> instrumentTuning){
@@ -121,6 +159,9 @@ public class ChordFinder {
             //System.out.println(chordFound.isCorrect(chordTones, instrumentStrings));
             //System.out.println();
         }
+    }
+    public ArrayList<String> getAliases(){
+        return this.aliases;
     }
 
 }
