@@ -58,7 +58,7 @@ public class ChordFinder {
 
 
         //generate tones of each string
-        this.generateStrings(numberOfStrings, numberOfFrets, instrumentTuning);
+        this.generateStrings(numberOfFrets, instrumentTuning);
 
         //find all possible chord, runs function with increasing number of non-played strings (only from the lowest string)
         for(int i = 0; i < instrumentStrings.size() - 2; i++){
@@ -138,7 +138,7 @@ public class ChordFinder {
 
 
     //generate array of InstrumentStrings, based on the tuning
-    private void generateStrings(int numberOfStrings, int numberOfFrets, ArrayList<String> instrumentTuning){
+    private void generateStrings(int numberOfFrets, ArrayList<String> instrumentTuning){
         for(String stringTuning : instrumentTuning){
             if(Arrays.asList(tones).contains(stringTuning)){
                 InstrumetString newString = new InstrumetString(stringTuning, numberOfFrets);
@@ -161,8 +161,6 @@ public class ChordFinder {
     public void printChords(){
         for(Chord chordFound : chords){
             chordFound.printString();
-            //System.out.println(chordFound.isCorrect(chordTones, instrumentStrings));
-            //System.out.println();
         }
     }
     public ArrayList<String> getAliases(){
