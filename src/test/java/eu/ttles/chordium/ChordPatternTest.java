@@ -1,5 +1,6 @@
 package eu.ttles.chordium;
 
+import eu.ttles.chordium.utils.chordPattern;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

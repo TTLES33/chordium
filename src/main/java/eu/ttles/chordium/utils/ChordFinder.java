@@ -1,9 +1,11 @@
-package eu.ttles.chordium;
+package eu.ttles.chordium.utils;
+
+import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
+@Configuration
 public class ChordFinder {
 
     private final String[] tones = {"G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#"};
@@ -29,7 +31,13 @@ public class ChordFinder {
     }
 
 
-    public void findChord(String base, String type, int numberOfStrings, int numberOfFrets, ArrayList<String> instrumentTuning){
+    public void findChord(String base, String type, int numberOfStrings, int numberOfFrets, ArrayList<String> instrumentTuning) throws IllegalArgumentException {
+
+        //check if chord finder can be created
+        argumentChecker(numberOfStrings, numberOfFrets, instrumentTuning);
+
+
+
         this.numberOfStrings = numberOfStrings;
         this.numberOfFrets = numberOfFrets;
         this.chords = new ArrayList<>();
@@ -39,7 +47,6 @@ public class ChordFinder {
 
 
         //get tones to form a chord
-        try {
             if(type.isBlank()){
                 chordNotationCreator.generateTonesByChordName(base);
             }else{
@@ -48,18 +55,6 @@ public class ChordFinder {
 
             chordTones = chordNotationCreator.getWorkingChordTones();
             this.aliases = chordNotationCreator.getAliases();
-
-
-
-        }catch (Exception e) {
-            if(e.getMessage().equals("base not accepted")){
-                System.out.println("base not accepted");
-            } else if (e.getMessage().equals("type not accepted")) {
-                System.out.println("type not accepted");
-            }else{
-                System.out.println(e.getMessage());
-            }
-        }
 
 
         //generate tones of each string
@@ -81,6 +76,16 @@ public class ChordFinder {
     }
     public void findChord(String basePlusType, int numberOfStrings, int numberOfFrets, ArrayList<String> instrumentTuning){
         this.findChord(basePlusType,"", numberOfStrings, numberOfFrets, instrumentTuning);
+    }
+
+    //check if chord finder can be created (arguments have right formats)
+    private void argumentChecker(int numberOfStrings, int numberOfFrets, ArrayList<String> instrumentTuning) throws IllegalArgumentException{
+        if(numberOfStrings != instrumentTuning.size()){
+            throw new IllegalArgumentException("Number_of_strings_does_not_match_number_of_tuning_tones");
+        }
+        if(numberOfFrets <=0){
+            throw new IllegalArgumentException("Fret number can't be negative");
+        }
     }
 
 
@@ -162,6 +167,10 @@ public class ChordFinder {
     }
     public ArrayList<String> getAliases(){
         return this.aliases;
+    }
+
+    public ArrayList<Chord> getChords(){
+        return this.chords;
     }
 
 }

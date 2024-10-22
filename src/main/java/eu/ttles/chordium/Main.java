@@ -1,4 +1,7 @@
 package eu.ttles.chordium;
+import eu.ttles.chordium.utils.ChordFinder;
+
+
 import java.util.ArrayList;
 
 public class Main {
@@ -17,12 +20,12 @@ public class Main {
 
         ChordFinder chordFinder = new ChordFinder();
 
-        chordFinder.findChord("C", 6,15, tuning);
+        chordFinder.findChord("C", 7,15, tuning);
         chordFinder.printChords();
 
-        System.out.println("--------G7--------------");
-        chordFinder.findChord("G","7", 6,15, tuning);
-        chordFinder.printChords();
+//        System.out.println("--------G7--------------");
+//        chordFinder.findChord("G","7", 6,15, tuning);
+//        chordFinder.printChords();
 
     }
 }

@@ -1,4 +1,4 @@
-package eu.ttles.chordium;
+package eu.ttles.chordium.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
