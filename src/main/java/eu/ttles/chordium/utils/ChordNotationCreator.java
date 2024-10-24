@@ -146,8 +146,22 @@ public class ChordNotationCreator {
         }
        // type = type.toLowerCase(); //todo: handle all cases
 
+        //convert harp to b
+        if(base.endsWith("#")){
+            base = base.substring(0,1);
+            if(Arrays.asList(this.tonesFlats).contains(base)){
+                int nextItem = Arrays.asList(this.tonesFlats).indexOf(base) + 1;
+                if(nextItem > 11){
+                    nextItem = nextItem - 12;
+                }
+                base = tonesFlats[nextItem];
+            }else{
+                throw new IllegalArgumentException("base not accepted");
+            }
+        }
+
         //if base is correct
-        if(Arrays.asList(this.tones).contains(base)){
+        if(Arrays.asList(this.tonesFlats).contains(base)){
 
             boolean chordTypeExists = false;
             //if type exists

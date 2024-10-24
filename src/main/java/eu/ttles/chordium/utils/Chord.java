@@ -197,6 +197,16 @@ public class Chord implements Comparable<Chord>{
        // System.out.println("isPlayable: " + this.isPlayable(4)  );
     }
 
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < this.tonesPositions.size(); i++){
+            sb.append(this.tonesPositions.get(i)).append(" ");
+        }
+        sb.append("\n");
+        return sb.toString();
+    }
+
 
     public void setPosition(final int position){
         this.position = position;

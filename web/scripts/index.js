@@ -72,7 +72,7 @@ function loadChordsFromAPI(){
         redirect: "follow"
       };
       
-      fetch('http://localhost:8080/api/findChords?' 
+      fetch('http://192.168.1.100:8080/api/findChords?' 
         + new URLSearchParams({
             base: settings.key,
             type: settings.type
