@@ -127,7 +127,7 @@ public class Chord implements Comparable<Chord>{
 
     }
 
-    //finds width of chord on fretboard
+    //finds width of chord on fretboard (+ find chord position)
     private void findChordWidth(){
         if(!isComplete()){
             throw new RuntimeException("Chord not complete");
@@ -146,6 +146,9 @@ public class Chord implements Comparable<Chord>{
                 maxPostition = this.tonesPositions.get(i);
             }
         }
+
+        this.position = minPostition;
+
         if(minPostition == 0){
             this.chordWidth = maxPostition - minPostition;
         }else{
@@ -153,6 +156,8 @@ public class Chord implements Comparable<Chord>{
         }
 
     }
+
+
 
     //find barre in chord
     public void findBarre(){

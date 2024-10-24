@@ -9,7 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path="/api", produces="application/json")
 public class ApiController {

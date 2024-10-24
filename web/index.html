@@ -1,0 +1,109 @@
+<html>
+    <head>
+        <script src="scripts/index.js"></script>
+        <script src="scripts/chords.js"></script>
+        <link rel="stylesheet" href="styles/index.css">
+
+        <!--load umd script -->
+        <script src="https://omnibrain.github.io/svguitar/js/svguitar.umd.js"></script>
+    </head>
+    <body onload="loadingPageAnimationPrepare();loadChordsFromAPI();">
+         <!-- hidden from default-->
+          <div id="typeModal" class="modal">
+            <div class="moreTypes">
+                <div onclick="closeModal();" class="closeButton">
+                    Close
+                </div>
+                <div class="chordSelectorTypesContainer">
+                    
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="modal_maj">major</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="modal_min">minor</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="aug">aug</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="dim">dim</div>
+                </div>
+                <div class="chordSelectorTypesContainer">
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="modal_7">7</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="modal_m7">m7</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="modal_maj7">maj7</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="aug7">aug7</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="dim7">dim7</div>
+                </div>
+                <div class="chordSelectorTypesContainer">
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="sus2">sus2</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="sus4">sus4</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="7sus2">7sus2</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="7sus4">7sus4</div>
+                </div>
+                <div class="chordSelectorTypesContainer">
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="9">9</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="maj7">maj7</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="11">11</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="m11">m11</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="13">13</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="m13">m13</div>
+                </div>
+                <div class="chordSelectorTypesContainer">
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="6">6</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="m6">m6</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="add9">add9</div>
+                    <div class="chordSelectorType" onclick="typeChange(this.id);" id="m9">m9</div>
+                </div>
+                <div class="chordSelectorTypesContainer">
+                    <div class="chordSelectorType" id="modal_5">5</div>
+                </div>
+           
+            </div>
+        </div>
+         
+        <div class="mainContainer">
+            <div class="header">
+                Chordium
+            </div>
+            <div class="chordSelector">
+             
+                <div class="selectKey">
+                    <div class="keyButton keyButtonSelected" onclick="keyChange(this.id);" id="C">C</div>
+                    <div class="keyButton" onclick="keyChange(this.id);" id="C#">C#</div>
+                    <div class="keyButton" onclick="keyChange(this.id);" id="D">D</div>
+                    <div class="keyButton" onclick="keyChange(this.id);" id="D#">D#</div>
+                    <div class="keyButton" onclick="keyChange(this.id);" id="E">E</div> 
+                    <div class="keyButton" onclick="keyChange(this.id);" id="F">F</div> 
+                    <div class="keyButton" onclick="keyChange(this.id);" id="F#">F#</div> 
+                    <div class="keyButton" onclick="keyChange(this.id);" id="G">G</div> 
+                    <div class="keyButton" onclick="keyChange(this.id);" id="G#">G#</div> 
+                    <div class="keyButton" onclick="keyChange(this.id);" id="A">A</div> 
+                    <div class="keyButton" onclick="keyChange(this.id);" id="A#">A#</div> 
+                    <div class="keyButton" onclick="keyChange(this.id);" id="B/H">B/H</div> 
+                </div>
+            
+                <div class="selectKey">
+                    <div class="typeButton typeButtonSelected" onclick="typeChange(this.id);" id="maj">maj</div>
+                    <div class="typeButton" onclick="typeChange(this.id);" id="min">min</div>
+                    <div class="typeButton" onclick="typeChange(this.id);" id="5">5</div>
+                    <div class="typeButton" onclick="typeChange(this.id);" id="7">7</div> 
+                    <div class="typeButton" onclick="typeChange(this.id);" id="maj7">maj7</div> 
+                    <div class="typeButton" onclick="typeChange(this.id);" id="m7">m7</div>
+                    <div class="moreTypeButton" onclick="typeChange(this.id);" id="more">more</div> 
+                </div>
+            </div>
+           
+           
+
+
+            <div class="chordShower">
+                <div class="mainChordContainer">
+                    <div id="chordName" class="chordName"></div>
+                    <div id="chordCanvas" class="chordCanvas">
+                        
+                    </div>
+                </div>
+                <div  class="chordNameAlternative">alternative:</div>
+                <div id="alternativeChordCanvas" class="alternativeChordCanvas">
+            
+                </div>
+            </div>
+            <div class="footer"></div>
+        </div>
+
+    </body>
+</html>
