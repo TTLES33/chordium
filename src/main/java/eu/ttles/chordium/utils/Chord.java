@@ -1,9 +1,6 @@
 package eu.ttles.chordium.utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.*;
 
 public class Chord implements Comparable<Chord>{
 
@@ -208,20 +205,73 @@ public class Chord implements Comparable<Chord>{
     }
 
 
-    public void setPosition(final int position){
-        this.position = position;
-    }
-    public int getPosition(){
-        return this.position;
-    }
-    //get set barre
-    public void setBarre(final int barrePosition, final int barreStartString, final int barreEndString){
-        this.barrePosition = barrePosition;
-        this.barreStartString = barreStartString;
-        this.barreEndString = barreEndString;
+    //generate output for generic API
+    public Map<String, Object> getApiValues(){
+        Map<String, Object> apiValues = new HashMap<>();
+
+        apiValues.put("chordWidth", this.chordWidth);
+        apiValues.put("chordPosition", this.position);
+        apiValues.put("barreStartString", barreStartString);
+        apiValues.put("barreEndString", barreEndString);
+        apiValues.put("barrePosition", barrePosition);
+        apiValues.put("tonePositions", tonesPositions);
+
+        return apiValues;
     }
 
+    //generate output for API, that can be best used with SVguitar
+    public Map<String, Object> getTransposedValues(){
+        Map<String, Object> transposedValues = new HashMap<>();
 
+        ArrayList<Integer> reversedTonesPositions = new ArrayList<>(tonesPositions);
+        Collections.reverse(reversedTonesPositions);
+
+        //generate frets array
+        ArrayList<Integer> transposedTonesPositions = new ArrayList<>();
+        for(int i = 0; i < reversedTonesPositions.size(); i++){
+            int currentFret = reversedTonesPositions.get(i);
+            if(currentFret == -1 || currentFret == 0){
+                transposedTonesPositions.add(currentFret);
+            }else{
+                if(this.position == 0){
+                    transposedTonesPositions.add(currentFret - position);
+                }else{
+                    transposedTonesPositions.add(currentFret - position + 1);
+                }
+            }
+        }
+
+        //if chord position == 2, expend chord by 1 fret, so it starts at 1st fret
+        if(this.position == 2){
+            this.position = 1;
+            chordWidth++;
+            for(int x = 0; x < transposedTonesPositions.size(); x++){
+                int currentFret = transposedTonesPositions.get(x);
+                if(currentFret != 0 && currentFret != -1){
+                    transposedTonesPositions.set(x, currentFret + 1);
+                }
+            }
+        }
+        //min chord width = 4
+        if(chordWidth < 4){
+            chordWidth = 4;
+        }
+
+        //generate barre object
+        Map<String, Integer> barres = new HashMap<>();
+        if(barreEndString != 0 || barreStartString != 0){
+            barres.put("toString", reversedTonesPositions.size() - barreEndString);
+            barres.put("fromString", reversedTonesPositions.size() - barreStartString);
+            barres.put("fret", reversedTonesPositions.size() - position + 1);
+        }
+
+        transposedValues.put("chordWidth", this.chordWidth);
+        transposedValues.put("chordPosition", this.position);
+        transposedValues.put("barres", barres);
+        transposedValues.put("tonesPositions", transposedTonesPositions);
+
+        return transposedValues;
+    }
 
     public int getBarrePosition(){
         return this.barrePosition;

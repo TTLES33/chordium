@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 @Configuration
 public class ChordFinder {
@@ -171,4 +172,21 @@ public class ChordFinder {
         return this.chords;
     }
 
+    //return all chords to api (transposed to be best used with SVGuitar
+    public ArrayList<Map<String, Object>> getTransposedChords(){
+        ArrayList<Map<String, Object>> transposedChords = new ArrayList<>();
+        for(Chord chord : chords){
+            transposedChords.add(chord.getTransposedValues());
+        }
+        return transposedChords;
+    }
+
+    //return all chords to generic api
+    public ArrayList<Map<String, Object>> getApiChords(){
+        ArrayList<Map<String, Object>> apiValues = new ArrayList<>();
+        for(Chord chord : chords){
+            apiValues.add(chord.getApiValues());
+        }
+        return apiValues;
+    }
 }
