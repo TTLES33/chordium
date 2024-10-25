@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.*;
 
 public class ChordNotationCreator {
-    private final String[] tones = {"C", "D", "E", "F", "G", "A", "B"};
+    //private final String[] tones = {"C", "D", "E", "F", "G", "A", "B"};
     private final String[] tonesFlats = {"C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"};
 
     //hashmap of english short interval names with corresponding number of semitones

@@ -135,7 +135,7 @@ public class Chord implements Comparable<Chord>{
 
         for(int i = 1; i <this.tonesPositions.size(); i++){
 
-            //if actual position < previous minPosition and it is > 0 or minPosition is non-played string
+            //if actual position < previous minPosition, and it is > 0 or minPosition is non-played string
             if((this.tonesPositions.get(i) < minPostition && this.tonesPositions.get(i) > 0)   ||  minPostition == -1) {
                 minPostition = this.tonesPositions.get(i);
             }
@@ -185,8 +185,8 @@ public class Chord implements Comparable<Chord>{
 
     //prints all tones of chord on one line
     public void printString(){
-        for(int i = 0; i < this.tonesPositions.size(); i++){
-            System.out.print(this.tonesPositions.get(i) + " ");
+        for (Integer tonesPosition : this.tonesPositions) {
+            System.out.print(tonesPosition + " ");
         }
         System.out.println();
         //System.out.println("Barre: " + this.barrePosition + ": " + this.barreStartString + " " + this.barreEndString + " soundingStrings: " + this.barreNumberOfPlayedStrings);
@@ -197,8 +197,8 @@ public class Chord implements Comparable<Chord>{
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        for(int i = 0; i < this.tonesPositions.size(); i++){
-            sb.append(this.tonesPositions.get(i)).append(" ");
+        for (Integer tonesPosition : this.tonesPositions) {
+            sb.append(tonesPosition).append(" ");
         }
         sb.append("\n");
         return sb.toString();
@@ -207,8 +207,10 @@ public class Chord implements Comparable<Chord>{
 
     //generate output for generic API
     public Map<String, Object> getApiValues(){
+        //returning HashMap
         Map<String, Object> apiValues = new HashMap<>();
 
+        //create returning hashmap
         apiValues.put("chordWidth", this.chordWidth);
         apiValues.put("chordPosition", this.position);
         apiValues.put("barreStartString", barreStartString);
@@ -221,21 +223,27 @@ public class Chord implements Comparable<Chord>{
 
     //generate output for API, that can be best used with SVguitar
     public Map<String, Object> getTransposedValues(){
+        //returning HashMap
         Map<String, Object> transposedValues = new HashMap<>();
 
+        //reverse string order
         ArrayList<Integer> reversedTonesPositions = new ArrayList<>(tonesPositions);
         Collections.reverse(reversedTonesPositions);
 
-        //generate frets array
+        //transposed values for api
+        int apiPosition = this.position;
+        int apiChordWidth = this.chordWidth;
         ArrayList<Integer> transposedTonesPositions = new ArrayList<>();
-        for(int i = 0; i < reversedTonesPositions.size(); i++){
-            int currentFret = reversedTonesPositions.get(i);
-            if(currentFret == -1 || currentFret == 0){
+        ArrayList<Map<String, Integer>> barres = new ArrayList<>();
+
+        //generate frets array
+        for (int currentFret : reversedTonesPositions) {
+            if (currentFret == -1 || currentFret == 0) {
                 transposedTonesPositions.add(currentFret);
-            }else{
-                if(this.position == 0){
+            } else {
+                if (this.position == 0) {
                     transposedTonesPositions.add(currentFret - position);
-                }else{
+                } else {
                     transposedTonesPositions.add(currentFret - position + 1);
                 }
             }
@@ -243,8 +251,8 @@ public class Chord implements Comparable<Chord>{
 
         //if chord position == 2, expend chord by 1 fret, so it starts at 1st fret
         if(this.position == 2){
-            this.position = 1;
-            chordWidth++;
+            apiPosition = 1;
+            apiChordWidth++;
             for(int x = 0; x < transposedTonesPositions.size(); x++){
                 int currentFret = transposedTonesPositions.get(x);
                 if(currentFret != 0 && currentFret != -1){
@@ -253,22 +261,24 @@ public class Chord implements Comparable<Chord>{
             }
         }
         //min chord width = 4
-        if(chordWidth < 4){
-            chordWidth = 4;
+        if(apiChordWidth < 4){
+            apiChordWidth = 4;
         }
 
         //generate barre object
-        Map<String, Integer> barres = new HashMap<>();
         if(barreEndString != 0 || barreStartString != 0){
-            barres.put("toString", reversedTonesPositions.size() - barreEndString);
-            barres.put("fromString", reversedTonesPositions.size() - barreStartString);
-            barres.put("fret", reversedTonesPositions.size() - position + 1);
+            Map<String, Integer> barre = new HashMap<>();
+            barre.put("toString", reversedTonesPositions.size() - barreEndString);
+            barre.put("fromString", reversedTonesPositions.size() - barreStartString);
+            barre.put("fret", this.barrePosition - this.position + 1);
+            barres.add(barre);
         }
 
-        transposedValues.put("chordWidth", this.chordWidth);
-        transposedValues.put("chordPosition", this.position);
+        //create returning hashmap
+        transposedValues.put("chordWidth", apiChordWidth);
+        transposedValues.put("chordPosition", apiPosition);
         transposedValues.put("barres", barres);
-        transposedValues.put("tonesPositions", transposedTonesPositions);
+        transposedValues.put("tonePositions", transposedTonesPositions);
 
         return transposedValues;
     }

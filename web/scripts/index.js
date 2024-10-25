@@ -73,7 +73,7 @@ function loadChordsFromAPI(){
         redirect: "follow"
       };
       
-      fetch('http://192.168.1.100:8080/api/findChords?' 
+      fetch('http://192.168.1.100:8080/api/findChordsTransposed?' 
         + new URLSearchParams({
             base: settings.key,
             type: settings.type
@@ -91,7 +91,7 @@ function loadChordsFromAPI(){
 
 }
 
-function chordDiagramGenerate(chordsArray){
+/* function chordDiagramGenerate(chordsArray){
     console.log("Function: chordDiagramGenerate");
     
 
@@ -112,11 +112,12 @@ function chordDiagramGenerate(chordsArray){
         chartDiv.className = "chordDiv";
 
         let frets = []; //frets (fingers) on each string "[string, fretPosition]"
-        let chordPosition = chordsArray[i].position;
+        let chordPosition = chordsArray[i].chordPosition;
         let chordWidth = chordsArray[i].chordWidth;
         let barres = [];
 
         let reversedChordsArrayPositions = chordsArray[i].tonePositions.reverse();
+        console.log(reversedChordsArrayPositions)
          //generate frets array
         for(x = 0; x < reversedChordsArrayPositions.length; x++){
             let currentFret = reversedChordsArrayPositions[x];
@@ -127,13 +128,14 @@ function chordDiagramGenerate(chordsArray){
                 frets.push([x+1, 0]);
             }else{
                 if(chordPosition == 0){
-                    frets.push([x+1, currentFret - chordsArray[i].position]);
+                    frets.push([x+1, currentFret - chordsArray[i].chordPosition]);
                 }else{
-                    frets.push([x+1, currentFret - chordsArray[i].position + 1]);
+                    frets.push([x+1, currentFret - chordsArray[i].chordPosition + 1]);
                 }
               
             }
        }
+       console.log(frets)
         //if chord position == 2, expend chord by 1 fret, so it starts at 1st fret
        if(chordPosition == 2 ){
         console.log("transpose");
@@ -158,7 +160,7 @@ function chordDiagramGenerate(chordsArray){
             barres = [{
                 "toString": reversedChordsArrayPositions.length - chordsArray[i].barreEndString,
                 "fromString": reversedChordsArrayPositions.length - chordsArray[i].barreStartString,
-                "fret": chordsArray[i].barrePosition - chordsArray[i].position + 1
+                "fret": chordsArray[i].barrePosition - chordsArray[i].chordPosition + 1
             }];
         }
         console.log(frets);
@@ -169,6 +171,81 @@ function chordDiagramGenerate(chordsArray){
   
         console.log(barres);
 
+        var chart = new svguitar.SVGuitarChord(chartDiv);
+        chart.configure(
+            {
+            frets: chordWidth,
+            strings: 6,
+            //tuning: ['g', 'C', 'E', 'A'],
+            strokeWitdh: 20,
+            nutWitdh: 10,
+            color: '#ffffff',
+        })
+        .chord(
+          {
+              fingers: frets,
+              barres: barres,
+              position: chordPosition,
+              //title: 
+          }
+          
+        )
+        .draw();
+        
+        if(i == 0){
+            document.getElementById("chordCanvas").appendChild(chartDiv);
+        }else{
+            document.getElementById("alternativeChordCanvas").appendChild(chartDiv);
+        }
+       
+    }
+    
+}
+ */
+
+
+//generate chord SVG from loaded object
+function chordDiagramGenerate(chordsArray){
+    console.log("Function: chordDiagramGenerate");
+ 
+    //clear all chord diagrams in canvases
+    document.getElementById("chordCanvas").innerHTML = "";
+    document.getElementById("alternativeChordCanvas").innerHTML = "";
+
+
+    //generate each chord in chordsArray
+    for(i = 0; i < chordsArray.length; i++){
+        console.log(i);
+        console.log(chordsArray[i]);
+
+        var chartDiv = document.createElement('div');
+        chartDiv.id = "chart" + i;
+        chartDiv.className = "chordDiv";
+
+        let frets = []; //frets (fingers) on each string "[string, fretPosition]"
+        let tonePositions = chordsArray[i].tonePositions;
+        let chordPosition = chordsArray[i].chordPosition;
+        let chordWidth = chordsArray[i].chordWidth;
+        let barres = chordsArray[i].barres;
+
+        
+        //generate frets array
+        for(x = 0; x < tonePositions.length; x++){
+            let currentFret = tonePositions[x];
+            if(currentFret == -1){
+                frets.push([x+1, 'x'])
+            }else{
+                frets.push([x+1, currentFret]); 
+            }
+        }
+
+
+
+        console.log(frets);
+        console.log("ChordWidth: " + chordWidth);
+        console.log("chordPosition: " + chordPosition);
+  
+    
         var chart = new svguitar.SVGuitarChord(chartDiv);
         chart.configure(
             {

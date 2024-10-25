@@ -5,9 +5,9 @@ import java.util.HashSet;
 //data structure to hold chord intervals and its names
 public class chordPattern {
 
-    private String fullName;
-    private int[] intervals;
-    private HashSet<String> aliases;
+    private final String fullName;
+    private final int[] intervals;
+    private final HashSet<String> aliases;
 
     public chordPattern(String fullName, int[] intervals, HashSet<String> aliases) {
         this.fullName = fullName;
@@ -29,9 +29,4 @@ public class chordPattern {
     public HashSet<String> getAliases() {
         return aliases;
     }
-
-
-
-
-
 }
