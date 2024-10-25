@@ -8,7 +8,12 @@
         <script src="https://omnibrain.github.io/svguitar/js/svguitar.umd.js"></script>
     </head>
     <body onload="loadingPageAnimationPrepare();loadChordsFromAPI();">
-         <!-- hidden from default-->
+       
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+       
+        <!-- hidden from default-->
           <div id="typeModal" class="modal">
             <div class="moreTypes">
                 <div onclick="closeModal();" class="closeButton">
@@ -60,8 +65,8 @@
                 Chordium
             </div>
             <div class="chordSelector">
-             
-                <div class="selectKey">
+                <label>Type:</label>
+                <div name="test" class="selectKey">
                     <div class="keyButton keyButtonSelected" onclick="keyChange(this.id);" id="C">C</div>
                     <div class="keyButton" onclick="keyChange(this.id);" id="C#">C#</div>
                     <div class="keyButton" onclick="keyChange(this.id);" id="D">D</div>

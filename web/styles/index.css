@@ -4,7 +4,9 @@
 :root{
     --backgroundColor: #151718;
     --highlightColor:#5867ff;
-    --buttonColor: #262728;
+    --containerColor: #262728;
+    --alternativeContainerColor: #4d4d4d;
+    --buttonColor: #2f2f2f;
     --mainFont: 'Open Sans', sans-serif;
     --headerFont: 'Rubik', sans-serif;
 }
@@ -68,7 +70,7 @@ body{
 
     display: flex;
     flex-direction: row;
-    background-color: var(--buttonColor);
+    background-color: var(--containerColor);
     padding: 10px;
     margin: 15px;
     border-radius: 5px;
@@ -105,23 +107,30 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-width: 90vw;
 }
 .selectKey{
     padding: 10px;
     display: flex;
     margin-bottom: 20px;
-    background: var(--buttonColor);
+    background: var(--containerColor);
     border-radius: 5px;
+    flex-direction: row;
+flex-wrap: wrap;
+justify-content: space-evenly;
 }
 .keyButton{
-    margin: 0px 10px;
+    margin: 5px 10px;
+    text-align: center;
+    border: 1px solid var(--buttonColor);
+    background: var(--buttonColor);
     font-size: 20;
     color: #dddddd;
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 5px;
     border: 0px solid var(--highlightColor);
-    min-width: 20px;
+    min-width: 35px;
 }
 .keyButton:hover{
     padding: 9px 19px;
@@ -137,7 +146,10 @@ body{
 
 
 .typeButton{
-    margin: 0px 8px;
+    margin: 5px 10px;
+    text-align: center;
+    border: 1px solid var(--buttonColor);
+    background: #2f2f2f;
     font-size: 18;
     color: #dddddd;
     padding: 8px 18px;
@@ -160,7 +172,10 @@ body{
     border: 1px solid var(--highlightColor);
     border-radius: 5px;
 
-    margin: 0px 8px;
+    margin: 5px 10px;
+    text-align: center;
+    background: var(--containerColor);
+
     font-size: 18;
     color: #dddddd;
     padding: 8px 18px;
@@ -185,7 +200,7 @@ body{
 }
 .chordDiv{
     width: fit-content;    
-    background: var(--buttonColor);
+    background: var(--containerColor);
     border-radius: 15px;
     margin: 30px;
 }
@@ -198,6 +213,10 @@ body{
     display: flex;
     justify-content: center;
     font-weight: bold;
+    width: 100%;
+    background: var(--alternativeContainerColor);
+    margin-top: 40px;
+    border-radius: 10px;
 }
 .chordNameAlternative{
     margin-top: 20px;

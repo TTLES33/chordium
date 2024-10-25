@@ -41,6 +41,7 @@ function typeChange(element_id){
 
 
 function loadingPageAnimationPrepare(){
+    changeChordLabel();
     document.getElementById("chordCanvas").innerHTML = "";
     document.getElementById("alternativeChordCanvas").innerHTML = "";
 
@@ -94,7 +95,7 @@ function chordDiagramGenerate(chordsArray){
     console.log("Function: chordDiagramGenerate");
     
 
-    changeChordLabel();
+    
  
     //clear all chord diagrams in canvases
     document.getElementById("chordCanvas").innerHTML = "";
@@ -112,54 +113,61 @@ function chordDiagramGenerate(chordsArray){
 
         let frets = []; //frets (fingers) on each string "[string, fretPosition]"
         let chordPosition = chordsArray[i].position;
-        let chordsArrayLength =chordsArray[i].tonePositions.length 
         let chordWidth = chordsArray[i].chordWidth;
         let barres = [];
 
-        //generate frets array
-        for(x = 0; x < chordsArrayLength; x++){
-            //from api string conversely, string 6=1, 5=2, 4=3, 3=4, 2=5, 1=6
-            let actualFret = chordsArray[i].tonePositions[chordsArrayLength - 1 - x];
-            if(actualFret == -1){
+        let reversedChordsArrayPositions = chordsArray[i].tonePositions.reverse();
+         //generate frets array
+        for(x = 0; x < reversedChordsArrayPositions.length; x++){
+            let currentFret = reversedChordsArrayPositions[x];
+            if(currentFret == -1){
                 console.log('x')
                 frets.push([x+1, 'x'])
-            }else if(actualFret == 0){
-                frets.push([x+1, actualFret])
+            }else if(currentFret == 0){
+                frets.push([x+1, 0]);
             }else{
-                frets.push([x+1, actualFret - chordPosition + 1])
-            }
-        }
-
-        
-
-        //if chord position == 2, expend chord by 1 fret, so it starts at 1st fret
-        if(chordPosition == 2 ){
-            chordPosition = 0;
-            chordWidth++;
-            for(x = 0; x < frets.length; x++){
-                if(frets[x][1] != 0 && frets[x][1] != 'x'){
-                    frets[x][1] = frets[x][1] + 1;
+                if(chordPosition == 0){
+                    frets.push([x+1, currentFret - chordsArray[i].position]);
+                }else{
+                    frets.push([x+1, currentFret - chordsArray[i].position + 1]);
                 }
+              
+            }
+       }
+        //if chord position == 2, expend chord by 1 fret, so it starts at 1st fret
+       if(chordPosition == 2 ){
+        console.log("transpose");
+        chordPosition = 1;
+        chordWidth++;
+        for(x = 0; x < frets.length; x++){
+            if(frets[x][1] != 0 && frets[x][1] != 'x'){
+
+                frets[x][1] = frets[x][1] + 1;
+            }
             }
         }
 
+    
         //min chord width = 4
         if(chordWidth < 4){
             chordWidth = 4;
         }
 
-        
-        console.log(frets);
-       
-        //generate barres object (+recalculate strings from api)
-        if(chordsArray[i].barreEndString != 0 && chordsArray[i].barreStartString != 0){
+
+        if(chordsArray[i].barreEndString != 0 || chordsArray[i].barreStartString != 0){
             barres = [{
-                "toString": chordsArrayLength - chordsArray[i].barreEndString,
-                "fromString": chordsArrayLength - chordsArray[i].barreStartString,
-                "fret": chordsArray[i].barrePosition - chordPosition + 1
+                "toString": reversedChordsArrayPositions.length - chordsArray[i].barreEndString,
+                "fromString": reversedChordsArrayPositions.length - chordsArray[i].barreStartString,
+                "fret": chordsArray[i].barrePosition - chordsArray[i].position + 1
             }];
         }
-        //console.log(barres);
+        console.log(frets);
+        console.log("ChordWidth: " + chordWidth);
+        //console.log("barres: " + barres);
+        console.log("chordPosition: " + chordPosition);
+        //generate barres object (+recalculate strings from api)
+  
+        console.log(barres);
 
         var chart = new svguitar.SVGuitarChord(chartDiv);
         chart.configure(
@@ -167,8 +175,8 @@ function chordDiagramGenerate(chordsArray){
             frets: chordWidth,
             strings: 6,
             //tuning: ['g', 'C', 'E', 'A'],
-            //strokeWitdh: 20,
-            //nutWitdh: 10,
+            strokeWitdh: 20,
+            nutWitdh: 10,
             color: '#ffffff',
         })
         .chord(
