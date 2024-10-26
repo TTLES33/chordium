@@ -295,4 +295,7 @@ public class ChordNotationCreator {
     public ArrayList<String> getAliases(){
         return this.aliases;
     }
+    public HashSet<chordPattern> getChordPatterns(){
+        return this.chordPatternsSet;
+    }
 }

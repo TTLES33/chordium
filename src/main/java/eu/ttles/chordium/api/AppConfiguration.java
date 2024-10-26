@@ -12,5 +12,7 @@ public class AppConfiguration {
     public ChordFinder chordFinder(){
         return new ChordFinder();
     }
+
+
 }
 

@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 
 @Configuration
@@ -188,5 +189,11 @@ public class ChordFinder {
             apiValues.add(chord.getApiValues());
         }
         return apiValues;
+    }
+
+
+    //return info about all chord types (for api)
+    public HashSet<chordPattern> getChordPatterns(){
+        return chordNotationCreator.getChordPatterns();
     }
 }
