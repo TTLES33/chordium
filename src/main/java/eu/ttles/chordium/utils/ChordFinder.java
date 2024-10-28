@@ -2,10 +2,7 @@ package eu.ttles.chordium.utils;
 
 import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 @Configuration
 public class ChordFinder {
@@ -161,6 +158,7 @@ public class ChordFinder {
     }
 
     public void printChords(){
+        this.sortChords();
         for(Chord chordFound : chords){
             chordFound.printString();
         }
@@ -170,11 +168,13 @@ public class ChordFinder {
     }
 
     public ArrayList<Chord> getChords(){
+        this.sortChords();
         return this.chords;
     }
 
     //return all chords to api (transposed to be best used with SVGuitar
     public ArrayList<Map<String, Object>> getTransposedChords(){
+        this.sortChords();
         ArrayList<Map<String, Object>> transposedChords = new ArrayList<>();
         for(Chord chord : chords){
             transposedChords.add(chord.getTransposedValues());
@@ -184,6 +184,7 @@ public class ChordFinder {
 
     //return all chords to generic api
     public ArrayList<Map<String, Object>> getApiChords(){
+        this.sortChords();
         ArrayList<Map<String, Object>> apiValues = new ArrayList<>();
         for(Chord chord : chords){
             apiValues.add(chord.getApiValues());
@@ -191,6 +192,10 @@ public class ChordFinder {
         return apiValues;
     }
 
+    //sort chord array by its complexityScore
+    private void sortChords(){
+        Collections.sort(chords);
+    }
 
     //return info about all chord types (for api)
     public HashSet<chordPattern> getChordPatterns(){

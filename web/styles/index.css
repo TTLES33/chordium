@@ -6,9 +6,12 @@
     --highlightColor:#5867ff;
     --containerColor: #262728;
     --alternativeContainerColor: #4d4d4d;
-    --buttonColor: #2f2f2f;
+    --buttonColor: #353535;
     --mainFont: 'Open Sans', sans-serif;
     --headerFont: 'Rubik', sans-serif;
+    --grid-cols: 1;
+    --grid-rows: 1;
+      
 }
 body{
     margin: 0;
@@ -149,7 +152,7 @@ justify-content: space-evenly;
     margin: 5px 10px;
     text-align: center;
     border: 1px solid var(--buttonColor);
-    background: #2f2f2f;
+    background: var(--buttonColor);
     font-size: 18;
     color: #dddddd;
     padding: 8px 18px;
@@ -215,7 +218,7 @@ justify-content: space-evenly;
     font-weight: bold;
     width: 100%;
     background: var(--alternativeContainerColor);
-    margin-top: 40px;
+    margin-top: 80px;
     border-radius: 10px;
 }
 .chordNameAlternative{
@@ -239,4 +242,100 @@ justify-content: space-evenly;
     animation: fadeInAnimation 1.5s  forwards;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
+}
+.moreSettingsContainer{
+    min-width: 400px;
+}
+.moreSettingsButton{
+    background: none;
+    border-bottom: 1px solid var(--highlightColor);
+    border-radius: 0px;
+    padding: 4px 50px;
+    font-size: 18;
+}
+.moreSettingsButton:hover{
+    border: none !important;
+    border-bottom: 1px solid var(--highlightColor) !important;
+    padding: 4px 50px;
+
+}
+.moreSettingsButton .arrow_down{
+    border: solid rgb(255, 255, 255);
+    border-width: 0 1px 1px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  margin: 3px 10px;
+}
+.moreSettingsButton .arrow_up{
+    border: solid rgb(255, 255, 255);
+    border-width: 0 1px 1px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(225deg);
+  -webkit-transform: rotate(225deg);
+  margin: 0px 10px;
+}
+.moreSettingGrid{  
+    border-radius: 5px;
+    padding: 10px;
+    background: var(--containerColor);
+}
+.grid-item{
+    padding-bottom: 5px;
+    font-size: 14;
+}
+.grid-item-value{
+    background: var(--buttonColor);
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    color: white;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.customTuningContainer{
+    display: flex;
+    flex-wrap: wrap;
+justify-content: space-evenly;
+
+}
+.custom-tuning-string-container{
+    margin-right: 5px;
+    margin-bottom: 5px;
+    background: var(--buttonColor);
+    padding: 5px;
+    border-radius: 5px;
+}
+.custom-tuning-string-container:last-of-type{
+    margin-right: 0px;
+}
+.custom-tuning-string-container div{
+    text-align: center;
+    padding-bottom: 5px;
+    font-size: 14;
+}
+.custom-tuning-string-container select{
+    background: var(--alternativeContainerColor);
+    border: none;
+    padding: 3px 5px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 16;
+}
+
+.searchbutton{
+    width: 100%;
+    margin-top: 15px;
+    background: var(--highlightColor);
+    border: none;
+    padding: 7px;
+    border-radius: 5px;
+    color: white;
+    font-size: 18;
+    cursor: pointer;
 }

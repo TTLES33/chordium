@@ -17,6 +17,8 @@ public class Chord implements Comparable<Chord>{
 
     private final int numberOfStrings;
 
+    public int compareScore = 0;
+
 
 
 
@@ -34,6 +36,7 @@ public class Chord implements Comparable<Chord>{
             if(isComplete()){
                 this.findBarre();
                 this.findChordWidth();
+                this.computeScore();
             }
         }else{
             throw new IllegalArgumentException("Tones out of bounds, trying to set tone on string number " + (this.tonesPositions.size() + 1) + ", number of strings: " + this.numberOfStrings);
@@ -183,6 +186,27 @@ public class Chord implements Comparable<Chord>{
         }
     }
 
+    //calculate chord complexity score to comparing
+    private void computeScore(){
+        int numberOfPlayedString = (int) this.tonesPositions.stream().filter(x-> x>0).count();
+        this.compareScore = 100 - 2*this.position - 2*this.chordWidth - numberOfPlayedString;
+
+        if(this.barreEndString != 0 || this.barreStartString != 0){
+            this.compareScore = this.compareScore - 1;
+        }
+        //number of non-played strings
+        int skippedStrings = (int) tonesPositions.stream().filter(m -> m == -1).count();
+        //number of empty strings
+        int emptyStrings = (int) tonesPositions.stream().filter(m -> m == 0).count();
+
+        if(skippedStrings >= numberOfStrings/2){
+            this.compareScore = this.compareScore - 5;
+        }
+        if(skippedStrings  +  emptyStrings == this.numberOfStrings){
+            this.compareScore = this.compareScore - 50;
+        }
+    }
+
     //prints all tones of chord on one line
     public void printString(){
         for (Integer tonesPosition : this.tonesPositions) {
@@ -306,9 +330,9 @@ public class Chord implements Comparable<Chord>{
 
     @Override
     public int compareTo(Chord o) {
-        if(this.position > o.position){
+        if(this.compareScore < o.compareScore){
             return 1;
-        }else if(this.position < o.position){
+        }else if(this.compareScore > o.compareScore){
             return -1;
         }
         return 0;

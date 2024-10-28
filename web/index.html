@@ -3,7 +3,7 @@
         <script src="scripts/index.js"></script>
         <script src="scripts/chords.js"></script>
         <link rel="stylesheet" href="styles/index.css">
-
+        <title>Chordium</title>
         <!--load umd script -->
         <script src="https://omnibrain.github.io/svguitar/js/svguitar.umd.js"></script>
     </head>
@@ -65,7 +65,6 @@
                 Chordium
             </div>
             <div class="chordSelector">
-                <label>Type:</label>
                 <div name="test" class="selectKey">
                     <div class="keyButton keyButtonSelected" onclick="keyChange(this.id);" id="C">C</div>
                     <div class="keyButton" onclick="keyChange(this.id);" id="C#">C#</div>
@@ -89,6 +88,9 @@
                     <div class="typeButton" onclick="typeChange(this.id);" id="maj7">maj7</div> 
                     <div class="typeButton" onclick="typeChange(this.id);" id="m7">m7</div>
                     <div class="moreTypeButton" onclick="typeChange(this.id);" id="more">more</div> 
+                </div>
+                <div class="moreSettingsContainer" id="moreSettingsContainer">
+                    <div class="typeButton moreSettingsButton" onclick="openMoreSettings();"> <i class="arrow_down"></i>more settings <i class="arrow_down"></i></div>
                 </div>
             </div>
            
