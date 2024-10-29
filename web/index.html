@@ -7,7 +7,7 @@
         <!--load umd script -->
         <script src="https://omnibrain.github.io/svguitar/js/svguitar.umd.js"></script>
     </head>
-    <body onload="loadingPageAnimationPrepare();loadChordsFromAPI();">
+    <body onload="loadingPageAnimationPrepare();loadChordsFromAPI();tuningsGenerate('guitar');">
        
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -66,31 +66,44 @@
             </div>
             <div class="chordSelector">
                 <div name="test" class="selectKey">
-                    <div class="keyButton keyButtonSelected" onclick="keyChange(this.id);" id="C">C</div>
-                    <div class="keyButton" onclick="keyChange(this.id);" id="C#">C#</div>
-                    <div class="keyButton" onclick="keyChange(this.id);" id="D">D</div>
-                    <div class="keyButton" onclick="keyChange(this.id);" id="D#">D#</div>
-                    <div class="keyButton" onclick="keyChange(this.id);" id="E">E</div> 
-                    <div class="keyButton" onclick="keyChange(this.id);" id="F">F</div> 
-                    <div class="keyButton" onclick="keyChange(this.id);" id="F#">F#</div> 
-                    <div class="keyButton" onclick="keyChange(this.id);" id="G">G</div> 
-                    <div class="keyButton" onclick="keyChange(this.id);" id="G#">G#</div> 
-                    <div class="keyButton" onclick="keyChange(this.id);" id="A">A</div> 
-                    <div class="keyButton" onclick="keyChange(this.id);" id="A#">A#</div> 
-                    <div class="keyButton" onclick="keyChange(this.id);" id="B/H">B/H</div> 
+                    <div class="keyButton selectorButton  keyButtonSelected" onclick="keyChange(this.id);" id="C">C</div>
+                    <div class="keyButton selectorButton" onclick="keyChange(this.id);" id="C#">C#</div>
+                    <div class="keyButton selectorButton" onclick="keyChange(this.id);" id="D">D</div>
+                    <div class="keyButton selectorButton" onclick="keyChange(this.id);" id="D#">D#</div>
+                    <div class="keyButton selectorButton" onclick="keyChange(this.id);" id="E">E</div> 
+                    <div class="keyButton selectorButton" onclick="keyChange(this.id);" id="F">F</div> 
+                    <div class="keyButton selectorButton" onclick="keyChange(this.id);" id="F#">F#</div> 
+                    <div class="keyButton selectorButton" onclick="keyChange(this.id);" id="G">G</div> 
+                    <div class="keyButton selectorButton" onclick="keyChange(this.id);" id="G#">G#</div> 
+                    <div class="keyButton selectorButton" onclick="keyChange(this.id);" id="A">A</div> 
+                    <div class="keyButton selectorButton" onclick="keyChange(this.id);" id="A#">A#</div> 
+                    <div class="keyButton selectorButton" onclick="keyChange(this.id);" id="B/H">B/H</div> 
                 </div>
             
                 <div class="selectKey">
-                    <div class="typeButton typeButtonSelected" onclick="typeChange(this.id);" id="maj">maj</div>
-                    <div class="typeButton" onclick="typeChange(this.id);" id="min">min</div>
-                    <div class="typeButton" onclick="typeChange(this.id);" id="5">5</div>
-                    <div class="typeButton" onclick="typeChange(this.id);" id="7">7</div> 
-                    <div class="typeButton" onclick="typeChange(this.id);" id="maj7">maj7</div> 
-                    <div class="typeButton" onclick="typeChange(this.id);" id="m7">m7</div>
+                    <div class="typeButton selectorButton typeButtonSelected" onclick="typeChange(this.id);" id="maj">maj</div>
+                    <div class="typeButton selectorButton" onclick="typeChange(this.id);" id="min">min</div>
+                    <div class="typeButton selectorButton" onclick="typeChange(this.id);" id="5">5</div>
+                    <div class="typeButton selectorButton" onclick="typeChange(this.id);" id="7">7</div> 
+                    <div class="typeButton selectorButton" onclick="typeChange(this.id);" id="maj7">maj7</div> 
+                    <div class="typeButton selectorButton" onclick="typeChange(this.id);" id="m7">m7</div>
                     <div class="moreTypeButton" onclick="typeChange(this.id);" id="more">more</div> 
                 </div>
+
+       
+                <div id="instrumentSelector" class="instrumentSelector">
+                    <div class="instrumentContainer">
+                        <div class="selectorButton instrument instrument-selected" id="instrument_guitar" onclick="instrumentChange(this);">Guitar</div>
+                        <div class="selectorButton instrument" id="instrument_ukulele" onclick="instrumentChange(this);">Ukulele</div>
+                    </div>
+                    <div id="instrumentTunings" class="instrumentTunings">
+                
+                    </div>
+                    <div class="moreSettingsButton typeButton selectorButton" onclick="openMoreSettings();"> <i class="arrow_down"></i>more settings <i class="arrow_down"></i></div>
+                </div>
+           
                 <div class="moreSettingsContainer" id="moreSettingsContainer">
-                    <div class="typeButton moreSettingsButton" onclick="openMoreSettings();"> <i class="arrow_down"></i>more settings <i class="arrow_down"></i></div>
+                    
                 </div>
             </div>
            

@@ -5,7 +5,33 @@ var settings = {
     numberOfFrets: 15,
     tuning: ["E", "A", "D", "G", "B", "E"]
 }
+
+const predefinedinstruments = {
+    "guitar": {
+        numberOfStrings: 6,
+        numberOfFrets: 15,
+        tunings:[
+            ["E", "A", "D", "G", "B", "E"],
+            ["D", "A", "D", "G", "B", "E"],
+            ["E", "A", "D", "F#", "A", "D"],
+            ["C", "G", "C", "F", "A", "D"],
+        ]
+    },
+    "ukulele":{
+        numberOfStrings: 4,
+        numberOfFrets: 10,
+        tunings:[
+            ["G", "C", "E", "A"],
+            ["E", "A", "D", "G"],
+            ["E", "A", "D", "G"],
+            ["D", "G", "B", "E"],
+        ]
+    }
+}
 const tones = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+
+
+
 function keyChange(element_id){
     console.log("Function: keyChange");
     console.log("Arguments: " + element_id);
@@ -190,6 +216,10 @@ function changeChordLabel(){
 
 //open dialog for more options
 function openMoreSettings(){
+    //delete instrument container
+    let instrumentSelector = document.getElementById("instrumentSelector");
+    instrumentSelector.innerHTML = "";
+
 
     //get container element
     let container = document.getElementById("moreSettingsContainer");
@@ -342,7 +372,7 @@ function openCustomTuning(){
     }
 }
 
-
+//change tuning (IN MORE OPTIONS DIALOGE)
 function changeTuning(changed_element){
     let element_id = changed_element.id;
     let splittedArray = element_id.split("_");
@@ -350,4 +380,75 @@ function changeTuning(changed_element){
     settings.tuning[tuningId] = changed_element.value;
 }
 
+
+//change pre defined instrument
+function instrumentChange(element){
+    console.log("instrumentChange");
+
+    let instrument = element.id.split("_")[1];
+    document.getElementsByClassName("instrument-selected")[0].classList.remove("instrument-selected");
+    element.classList.add("instrument-selected");
+
+    settings.numberOfString = predefinedinstruments[instrument].numberOfStrings;
+    settings.numberOfFrets = predefinedinstruments[instrument].numberOfFrets;
+    settings.tuning = predefinedinstruments[instrument].tunings[0];
+
+    tuningsGenerate(instrument);
+}
+
+
+//generate buttons with predefined tunings
+function tuningsGenerate(instrument){
+    console.log("tuningsGenerate");
+
+    let instrumentTunings =  document.getElementById("instrumentTunings");
+    instrumentTunings.innerHTML = "";
+  
+    let instrumentSetting = predefinedinstruments[instrument];
+    for(i = 0; i < instrumentSetting.tunings.length; i++){
+        let tuningButton = document.createElement("div");
+
+        //id
+        tuningButton.id = "tuningButton_" + i;
+
+        //classes
+        tuningButton.classList.add("tuning", "selectorButton");
+        if(i === 0){
+            tuningButton.classList.add("tuningSelected");
+        }
+
+        //onclick
+        tuningButton.onclick = function(){
+            instrumentTuningChange(this, instrument);
+        }
+
+
+        //innerText
+        let tuningArray = instrumentSetting.tunings[i];
+        console.log(tuningArray);
+        let tuningString = "";
+        for(x = 0; x < tuningArray.length; x++){
+            tuningString = tuningString + "-" + tuningArray[x];
+        }
+        tuningString = tuningString.substring(1,tuningString.length);
+        tuningButton.innerText = tuningString;
+
+
+
+        instrumentTunings.appendChild(tuningButton);
+
+    }
+    loadChordsFromAPI();
+}
+
+function instrumentTuningChange(element, instrument){
+
+    let tuning_id = element.id.split("_")[1];
+    document.getElementsByClassName("tuningSelected")[0].classList.remove("tuningSelected");
+    element.classList.add("tuningSelected");
+
+    settings.tuning = predefinedinstruments[instrument].tunings[tuning_id];
+
+    loadChordsFromAPI();
+}
 
