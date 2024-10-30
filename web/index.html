@@ -7,7 +7,7 @@
         <!--load umd script -->
         <script src="https://omnibrain.github.io/svguitar/js/svguitar.umd.js"></script>
     </head>
-    <body onload="loadingPageAnimationPrepare();loadChordsFromAPI();tuningsGenerate('guitar');">
+    <body onload="loadingPageAnimationPrepare();loadChordsFromAPI();tuningsGenerate('guitar'); colorsShow();">
        
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -61,8 +61,12 @@
         </div>
          
         <div class="mainContainer">
+          
+            <div class="colors" id="colors">
+
+            </div>
             <div class="header">
-                Chordium
+                <img src="chordiumLogo.png" class="logo" alt="">
             </div>
             <div class="chordSelector">
                 <div name="test" class="selectKey">
@@ -122,7 +126,34 @@
             
                 </div>
             </div>
-            <div class="footer"></div>
+                <div class="footer">
+    
+                    <div class="footer1">         
+                        <div>Chordium by TTLES</div>
+                        <div><a href="https://github.com/TTLES33/Chordium">Chordium Github repository</a></div>
+                        <div><a href="https://ttles.eu">ttles.eu</a></div>
+                    </div>
+                    
+                    <div class="footer2">
+                        <div>Used Resources</div>
+                        <div><a href="https://github.com/omnibrain/svguitar">SVGuitar</a></div>
+                        <div><a href="https://github.com/tonaljs/">tonal</a></div>
+                        <div><a href="https://en.wikipedia.org/wiki/Interval_(music)">Wikipedia - Interval</a></div>
+                        <div><a href="https://en.wikibooks.org/wiki/Music_Theory/Complete_List_of_Chord_Patterns">Wikibooks - Chord Patterns</a></div>
+                        <div><a href="https://fonts.google.com/specimen/Rubik">https://fonts.google.com/specimen/Rubik</a></div>
+                        <div><a href="https://fonts.google.com/specimen/Open+Sans">https://fonts.google.com/specimen/Open+Sans</a></div>
+                       
+                    </div>
+                  
+                    <div class="footer3">
+                        <div>Contact me:</div>
+                        <div><a href="https://github.com/TTLES33">GitHub</a></div>
+                        <div><a href="https://discordapp.com/users/556176731703345152">Discord</a></div>
+                        <div><a href="https://www.reddit.com/user/TTLES33">Reddit</a></div>
+                        <div><a href="https://www.linkedin.com/in/jan-grygar/">LinkedIn</a></div>
+                        <div><a href="mailto:chordium@protonmail.com">chordium@protonmail.com</a></div>
+                    </div>
+                </div>  
         </div>
 
     </body>

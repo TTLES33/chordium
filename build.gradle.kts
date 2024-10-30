@@ -6,12 +6,17 @@ plugins {
 }
 
 group = "eu.ttles.chordium"
-version = "1.0-SNAPSHOT"
+version = "1.0.4-BETA"
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+tasks.bootJar {
+    archiveFileName = "chordium.jar"
+    mainClass = "eu.ttles.chordium.ChordiumApplication"
 }
 
 repositories {

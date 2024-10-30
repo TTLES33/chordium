@@ -1,6 +1,10 @@
 package eu.ttles.chordium.utils;
 
-import java.io.File;
+import com.sun.tools.javac.Main;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class ChordNotationCreator {
@@ -85,8 +89,15 @@ public class ChordNotationCreator {
     private void loadChordIntervalsFromFile(){
 
         try{
+
+
+           // InputStream is = getClass().getResourceAsStream("/resources/chordIntervals.txt");
+            //BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
             //load file with all chords
-            Scanner scanner = new Scanner(new File("src/main/java/eu/ttles/chordium/utils/chordIntervals.txt"));
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("chordIntervals.txt");
+            Scanner scanner = new Scanner(inputStream);
+
             while(scanner.hasNextLine()){
 
                 //seperate names to array

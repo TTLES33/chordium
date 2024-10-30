@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=Rubik:wght@500&display=swap');
 
-
 :root{
     --backgroundColor: #151718;
     --highlightColor:#5867ff;
@@ -9,15 +8,23 @@
     --buttonColor: #353535;
     --mainFont: 'Open Sans', sans-serif;
     --headerFont: 'Rubik', sans-serif;
-    --grid-cols: 1;
-    --grid-rows: 1;
-      
 }
 body{
     margin: 0;
     background-color: var(--backgroundColor);
-    font-family: var(--mainFont);
+    font-family: var(--mainFont); 
     color:white;
+
+
+}
+
+.header{
+
+    font-size: 70;
+     margin-bottom: 20px; 
+}
+.logo{
+    max-height: 100px;
 }
 
 @keyframes fadeInAnimation {
@@ -95,11 +102,7 @@ body{
 
 
 
-.header{
-    font-family: var(--headerFont);
-    font-size: 70;
-    margin-bottom: 20px;
-}
+
 
 .mainContainer{
     display: flex;
@@ -395,4 +398,58 @@ justify-content: space-evenly;
 }
 .tuningSelected{
     border: 1px solid var(--highlightColor);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.colors button{
+    margin-left: 5px;
+    cursor:pointer;
+    margin-bottom: 20px;
+}
+
+
+.footer{
+    width: 100%;
+display: flex;
+flex-wrap: wrap;
+justify-content: space-evenly;
+background: var(--containerColor);
+padding: 50px 0px;
+font-weight: lighter;
+
+}
+.footer div:first-child div:first-child{
+    font-weight: bold;
+  font-family: 'Rubik', sans-serif;
+  font-size: 22px;
+  color: rgb(182, 182, 182);
+}
+.footer div div:not(:first-child) a{
+    padding-left: 10px;
+  color: white;
+  text-decoration: none;
+  transition: 0.2s;
+
+}
+.footer div div:first-child{
+    font-weight: bold;
+}
+.footer div div:not(:first-child){
+    font-weight: lighter;
+}
+.footer div div:not(:first-child) a:hover{
+    color: var(--highlightColor);
+  text-decoration: underline;
 }
