@@ -53,7 +53,17 @@ public class ApiController {
         ArrayList<String> tuningList = new ArrayList<>();
         for (int i = 0; i < tuning.length(); i++) {
             tuningList.add(String.valueOf(tuning.charAt(i)));
+            //look for sharp values
+            if(i != tuning.length() - 1) {
+                if(tuning.charAt(i+1) == '#') {
+                    int tuningListSize = tuningList.size();
+                    tuningList.set(tuningListSize - 1, tuningList.get(tuningListSize - 1) + '#');
+                    i++;
+                }
+            }
+
         }
+        System.out.println("tuningList: " + tuningList);
 
         //try to find chords, else throw error
         try {
