@@ -20,6 +20,7 @@ public class ApiController {
     @GetMapping("/findChords")
     public ArrayList<Map<String, Object>> findChords(@Autowired ChordFinder chordFinder, @RequestParam() String base, @RequestParam(defaultValue = "") String type, @RequestParam(defaultValue = "EADGBE") String tuning, @RequestParam(defaultValue = "6") Integer numberOfStrings, @RequestParam(defaultValue = "15") Integer numberOfFrets) {
 
+        checkApiMaxValues(base, type, tuning, numberOfStrings, numberOfFrets);
 
         createTuningAndFindChords(chordFinder, base, type, tuning, numberOfStrings, numberOfFrets);
 
@@ -30,6 +31,8 @@ public class ApiController {
     //transposed vales for api using SVGuitar
     @GetMapping("/findChordsTransposed")
     public ArrayList<Map<String, Object>> findChordsTransposed(@Autowired ChordFinder chordFinder, @RequestParam() String base, @RequestParam(defaultValue = "") String type, @RequestParam(defaultValue = "EADGBE") String tuning, @RequestParam(defaultValue = "6") Integer numberOfStrings, @RequestParam(defaultValue = "15") Integer numberOfFrets) {
+
+        checkApiMaxValues(base, type, tuning, numberOfStrings, numberOfFrets);
 
         createTuningAndFindChords(chordFinder, base, type, tuning, numberOfStrings, numberOfFrets);
 
@@ -74,6 +77,23 @@ public class ApiController {
         }
     }
 
-}
+    public void checkApiMaxValues (String base, String type, String tuning, Integer numberOfStrings, Integer numberOfFrets) throws IllegalArgumentException{
+        if(base.length() > 2){
+            throw new IllegalArgumentException("base tone not legal value");
+        }
+        if(type.length() > 10){
+            throw new IllegalArgumentException("type not legal value");
+        }
+        if(numberOfStrings > 30){
+            throw new IllegalArgumentException("exceeds max number of strings (30)");
+        }
+        if(numberOfFrets > 50){
+            throw new IllegalArgumentException("exceeds max number of frets (50)");
+        }
+        if(tuning.length() > 30){
+            throw new IllegalArgumentException("exceeds max number of tones in tuning (30)");
+        }
+    }
+    }
 
 
