@@ -31,7 +31,43 @@ const predefinedinstruments = {
 const tones = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 
 
+const colors = [
+    "#A22522",
+    "#4E4187",
+    "#A49966",
+    "#2E5266",
+    "#2C6E49",
+    "#775B59",
+    "#0F7173",
+    "#5867ff",
+    "#A4243B",
+    "#60463B",
+    "#087F8C",
+    "#095256",
+    "#8F3985",
+    "#248232",
+    "#931621",
+    "#2B4570",
+    "#2dd4be",
+]
 
+
+function colorsShow(){
+    let container = document.getElementById("colors");
+    for(i = 0; i < colors.length; i++){
+        let button = document.createElement("button");
+        button.id = "color_" + i;
+        button.innerHTML = colors[i];
+        button.onclick = function(){
+            document.documentElement.style.setProperty('--highlightColor', colors[this.id.split("_")[1]]);
+        }
+        container.appendChild(button);
+    }
+    
+}
+
+
+//change chord key 
 function keyChange(element_id){
     console.log("Function: keyChange");
     console.log("Arguments: " + element_id);
@@ -43,6 +79,7 @@ function keyChange(element_id){
    loadChordsFromAPI();
 }
 
+//change chord type 
 function typeChange(element_id){
     console.log("Function: typeChange");
     console.log("Arguments: " + element_id);
@@ -70,128 +107,6 @@ function typeChange(element_id){
 }
 
 
-function loadingPageAnimationPrepare(){
-    changeChordLabel();
-    document.getElementById("chordCanvas").innerHTML = "";
-    document.getElementById("alternativeChordCanvas").innerHTML = "";
-
-    var mainChartDiv = document.createElement('div');
-    mainChartDiv.className = "chordDiv";
-    mainChartDiv.classList.add("fadeInOutAnimation")
-    mainChartDiv.style.width = 200;
-    mainChartDiv.style.height = 200;
-    document.getElementById("chordCanvas").appendChild(mainChartDiv);
-
-
-    for(i = 0; i < 6; i++){
-        let chartDiv = document.createElement('div');
-        chartDiv.className = "chordDiv";
-        chartDiv.classList.add("fadeInOutAnimation")
-        chartDiv.style.width = 200;
-        chartDiv.style.height = 200;
-        document.getElementById("alternativeChordCanvas").appendChild(chartDiv);
-    }
-
-   
-
-}
-
-function loadChordsFromAPI(){
-    console.log("Function: loadChordsFromAPI")
-    const requestOptions = {
-        method: "GET",
-        redirect: "follow"
-      };
-              //TODO: check if numbers if settings are numbers!
-      fetch('http://192.168.1.100:8080/api/findChordsTransposed?' 
-        + new URLSearchParams({
-            base: settings.key,
-            type: settings.type,
-            tuning: settings.tuning.toString().replaceAll(",", ""),
-            numberOfStrings: parseInt(settings.numberOfString),
-            numberOfFrets: parseInt(settings.numberOfFrets)
-        })
-        , requestOptions)
-        .then((response) => response.json())
-        .then((result) => {
-            console.log(result)
-            if(result[0]){
-                chordDiagramGenerate(result);
-            }
-           
-        })
-        .catch((error) => console.error(error));
-
-}
-
-
-//generate chord SVG from loaded object
-function chordDiagramGenerate(chordsArray){
-    console.log("Function: chordDiagramGenerate");
- 
-    //clear all chord diagrams in canvases
-    document.getElementById("chordCanvas").innerHTML = "";
-    document.getElementById("alternativeChordCanvas").innerHTML = "";
-
-
-    //generate each chord in chordsArray
-    for(i = 0; i < chordsArray.length; i++){
-
-        var chartDiv = document.createElement('div');
-        chartDiv.id = "chart" + i;
-        chartDiv.className = "chordDiv";
-
-        let frets = []; //frets (fingers) on each string "[string, fretPosition]"
-        let tonePositions = chordsArray[i].tonePositions;
-        let chordPosition = chordsArray[i].chordPosition;
-        let chordWidth = chordsArray[i].chordWidth;
-        let barres = chordsArray[i].barres;
-
-        
-        //generate frets array
-        for(x = 0; x < tonePositions.length; x++){
-            let currentFret = tonePositions[x];
-            if(currentFret == -1){
-                frets.push([x+1, 'x'])
-            }else{
-                frets.push([x+1, currentFret]); 
-            }
-        }
-
-
-        var chart = new svguitar.SVGuitarChord(chartDiv);
-        chart.configure(
-            {
-            frets: chordWidth,
-            strings: settings.numberOfString,
-            strokeWitdh: 20,
-            nutWitdh: 10,
-            color: '#ffffff',
-        })
-        .chord(
-          {
-              fingers: frets,
-              barres: barres,
-              position: chordPosition,
-              //title: 
-          }
-          
-        )
-        .draw();
-        
-        if(i == 0){
-            document.getElementById("chordCanvas").appendChild(chartDiv);
-        }else{
-            document.getElementById("alternativeChordCanvas").appendChild(chartDiv);
-        }
-       
-    }
-    
-}
-
-
-
-
 function closeModal(){
     console.log("Function: closeModal");
     document.getElementById("typeModal").style.display = "none";
@@ -201,17 +116,7 @@ function openModal(){
     document.getElementById("typeModal").style.display = "flex";
 }
 
-function changeChordLabel(){
-    console.log("Function: changeChordLabel");
-  //set chord label
-    if(settings.type == "maj"){
-        document.getElementById("chordName").innerHTML = settings.key;
-    }else if(settings.type == "min"){
-        document.getElementById("chordName").innerHTML = settings.key + "m"
-    }else{
-        document.getElementById("chordName").innerHTML = settings.key + settings.type;
-    }
-}
+
 
 
 //open dialog for more options
@@ -237,7 +142,7 @@ function openMoreSettings(){
 
     let numberOfStringInput = document.createElement("input");
         numberOfStringInput.type = "number";
-        numberOfStringInput.value = "6";
+        numberOfStringInput.value = settings.numberOfString;
         numberOfStringInput.className = "grid-item-value";
         numberOfStringInput.oninput = function(){
             changeNumberOfStrings(this);
@@ -348,6 +253,7 @@ function openCustomTuning(){
         let stringInput = document.createElement("select");
         stringInput.type = "number";
         stringInput.id = "stringInput_" + i;
+        stringInput.max
         stringInput.oninput = function(){
             changeTuning(this);
         }

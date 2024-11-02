@@ -1,11 +1,13 @@
 <html>
     <head>
         <script src="scripts/index.js"></script>
-        <script src="scripts/chords.js"></script>
+        <script src="scripts/global.js"></script>
+        <script src="scripts/diagramGenerator.js"></script>
         <link rel="stylesheet" href="styles/index.css">
         <title>Chordium</title>
         <!--load umd script -->
         <script src="https://omnibrain.github.io/svguitar/js/svguitar.umd.js"></script>
+        <link rel="icon" type="image/x-icon" href="chordiumLogoIcon.png">
     </head>
     <body onload="loadingPageAnimationPrepare();loadChordsFromAPI();tuningsGenerate('guitar'); colorsShow();">
        
@@ -154,6 +156,10 @@
                         <div><a href="mailto:chordium@protonmail.com">chordium@protonmail.com</a></div>
                     </div>
                 </div>  
+        </div>
+
+        <div id="errorContainer" class="errorContainer">
+
         </div>
 
     </body>

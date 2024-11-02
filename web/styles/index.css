@@ -27,6 +27,27 @@ body{
     max-height: 100px;
 }
 
+.error{
+    margin: 15px;
+    background: #ff4141;
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    transition: 0.3s;
+    max-width: 500px;
+}
+
+.errorSvg {
+    margin-right: 10px;
+}
+
+.errorContainer{
+    display: block;
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    transition: 0.3s;
+}
 @keyframes fadeInAnimation {
     0% { opacity: 0 }
     50% { opacity: 1 }
