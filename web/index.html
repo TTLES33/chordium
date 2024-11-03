@@ -1,5 +1,6 @@
 <html>
     <head>
+        <script src="scripts/scriptsSettings.js"></script>
         <script src="scripts/index.js"></script>
         <script src="scripts/global.js"></script>
         <script src="scripts/diagramGenerator.js"></script>
@@ -96,8 +97,27 @@
                     <div class="moreTypeButton" onclick="typeChange(this.id);" id="more">more</div> 
                 </div>
 
-       
                 <div id="instrumentSelector" class="instrumentSelector">
+                    <div class="section">
+                        <div class="sectionText">Instrument</div>
+                        <select oninput="instrumentChange();" name="" id="instrumentSelectElement" class="instrumentSelectElement">
+                            <option value="guitar">Guitar</option>
+                            <option value="ukulele">Ukulele</option>
+                        </select>
+                    </div>
+                    <div class="section">
+                        <div class="sectionText">Tuning</div>
+                        <div id="instrumentTunings">
+
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="moreSettingsButton" onclick="openMoreSettings();">Other</div>
+                    </div>
+                </div>
+
+       
+               <!--  <div id="instrumentSelector" class="instrumentSelector">
                     <div class="instrumentContainer">
                         <div class="selectorButton instrument instrument-selected" id="instrument_guitar" onclick="instrumentChange(this);">Guitar</div>
                         <div class="selectorButton instrument" id="instrument_ukulele" onclick="instrumentChange(this);">Ukulele</div>
@@ -106,7 +126,7 @@
                 
                     </div>
                     <div class="moreSettingsButton typeButton selectorButton" onclick="openMoreSettings();"> <i class="arrow_down"></i>more settings <i class="arrow_down"></i></div>
-                </div>
+                </div> -->
            
                 <div class="moreSettingsContainer" id="moreSettingsContainer">
                     

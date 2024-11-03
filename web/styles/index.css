@@ -2,7 +2,7 @@
 
 :root{
     --backgroundColor: #151718;
-    --highlightColor:#5867ff;
+    --highlightColor:#931621;
     --containerColor: #262728;
     --alternativeContainerColor: #4d4d4d;
     --buttonColor: #353535;
@@ -24,7 +24,8 @@ body{
      margin-bottom: 20px; 
 }
 .logo{
-    max-height: 100px;
+    max-height: 80px;
+    margin-top: 20px;
 }
 
 .error{
@@ -146,7 +147,9 @@ body{
 flex-wrap: wrap;
 justify-content: space-evenly;
 }
-
+.selectKey:nth-of-type(2) .selectorButton{
+    margin: 5px 5px;
+}
 
 .alternativeChordCanvas{
     display: flex;
@@ -210,37 +213,7 @@ justify-content: space-evenly;
 .moreSettingsContainer{
     min-width: 400px;
 }
-.moreSettingsButton{
-    background: none !important;
-    font-size: 16 !important;
-    padding: 3px 25px !important;
-    margin-top: 15px !important;
-    border: 1px solid var(--highlightColor) !important;
-    border-radius: 5px !important;
-    transition: 0.3s;
-}
-.moreSettingsButton:hover{
-    background: var(--highlightColor) !important;
-    padding: 4px 25px !important;
-}
-.moreSettingsButton .arrow_down{
-    border: solid rgb(255, 255, 255);
-    border-width: 0 1px 1px 0;
-    display: inline-block;
-    padding: 3px;
-    transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-  margin: 3px 10px;
-}
-.moreSettingsButton .arrow_up{
-    border: solid rgb(255, 255, 255);
-    border-width: 0 1px 1px 0;
-    display: inline-block;
-    padding: 3px;
-    transform: rotate(225deg);
-  -webkit-transform: rotate(225deg);
-  margin: 0px 10px;
-}
+
 .moreSettingGrid{  
     border-radius: 5px;
     padding: 10px;
@@ -368,7 +341,7 @@ justify-content: space-evenly;
     background: var(--highlightColor);
 }
 
-
+/* 
 
 .instrumentSelector{
     margin-top: 20;
@@ -396,11 +369,12 @@ justify-content: space-evenly;
 
 .instrumentContainer{
     margin: 10px;
-    margin-bottom: 5px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
+    border-bottom: 1px solid var(--alternativeContainerColor);
+    padding-bottom: 5px;
 }
 
 .instrumentTunings{
@@ -419,10 +393,74 @@ justify-content: space-evenly;
 }
 .tuningSelected{
     border: 1px solid var(--highlightColor);
-}
+} */
 
 
 
+
+.instrumentSelector {
+    display: flex;
+    flex-wrap: wrap;
+    background: var(--containerColor);
+    padding: 5px;
+    border-radius: 5px;
+  }
+  
+  .instrumentSelector .section {
+    margin: 5px;
+  }
+  
+  .instrumentSelector .section .sectionText {
+    font-size: 13;
+  }
+  
+  .instrumentSelector .section select {
+    background: var(--buttonColor);
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    margin-top: 4px;
+    cursor: pointer;
+  }
+  
+  .instrumentSelector .section .tuningSelectElement {
+    background: var(--containerColor);
+    border: 1px solid var(--buttonColor);
+  }
+  
+  .instrumentSelector .section select {
+    margin-top: 1px;
+    border: 1px solid var(--buttonColor);
+    font-size: 15;
+  }
+  
+  .instrumentSelector .section {
+    margin: 5px 10px;
+  }
+  
+
+  
+  .moreSettingsButton {
+    background: none;
+    font-size: 16;
+    padding: 3px 25px;
+    border: 1px solid var(--highlightColor);
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .moreSettingsButton:hover {
+    background: var(--highlightColor) ;
+  }
+  
+  .section:nth-child(3) {
+    display: flex;
+    align-items: center;
+    border-left: 1px solid var(--buttonColor);
+    padding-left: 20;
+  }
+  
 
 
 

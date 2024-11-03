@@ -32,23 +32,14 @@ const tones = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 
 
 const colors = [
-    "#A22522",
     "#4E4187",
-    "#A49966",
     "#2E5266",
     "#2C6E49",
-    "#775B59",
-    "#0F7173",
     "#5867ff",
     "#A4243B",
-    "#60463B",
-    "#087F8C",
     "#095256",
-    "#8F3985",
-    "#248232",
     "#931621",
     "#2B4570",
-    "#2dd4be",
 ]
 
 
@@ -57,7 +48,7 @@ function colorsShow(){
     for(i = 0; i < colors.length; i++){
         let button = document.createElement("button");
         button.id = "color_" + i;
-        button.innerHTML = colors[i];
+        button.innerHTML = i + 1 + "-" + colors[i];
         button.onclick = function(){
             document.documentElement.style.setProperty('--highlightColor', colors[this.id.split("_")[1]]);
         }
@@ -288,12 +279,10 @@ function changeTuning(changed_element){
 
 
 //change pre defined instrument
-function instrumentChange(element){
+function instrumentChange(){
     console.log("instrumentChange");
 
-    let instrument = element.id.split("_")[1];
-    document.getElementsByClassName("instrument-selected")[0].classList.remove("instrument-selected");
-    element.classList.add("instrument-selected");
+    let instrument = document.getElementById("instrumentSelectElement").value;
 
     settings.numberOfString = predefinedinstruments[instrument].numberOfStrings;
     settings.numberOfFrets = predefinedinstruments[instrument].numberOfFrets;
@@ -308,50 +297,50 @@ function tuningsGenerate(instrument){
     console.log("tuningsGenerate");
 
     let instrumentTunings =  document.getElementById("instrumentTunings");
-    instrumentTunings.innerHTML = "";
-  
+    instrumentTunings.innerHTML = ""
+
+
+
+    //select for tunings
+    let tuningSelect = document.createElement("select");
+    tuningSelect.id = "tuningSelectElement";
+    tuningSelect.className = "tuningSelectElement";
+    tuningSelect.oninput = function(){
+        instrumentTuningChange(this);
+    }
+    
+
     let instrumentSetting = predefinedinstruments[instrument];
     for(i = 0; i < instrumentSetting.tunings.length; i++){
-        let tuningButton = document.createElement("div");
-
-        //id
-        tuningButton.id = "tuningButton_" + i;
-
-        //classes
-        tuningButton.classList.add("tuning", "selectorButton");
-        if(i === 0){
-            tuningButton.classList.add("tuningSelected");
-        }
-
-        //onclick
-        tuningButton.onclick = function(){
-            instrumentTuningChange(this, instrument);
-        }
-
+        let tuningOption = document.createElement("option");
+        tuningOption.value = i;
 
         //innerText
         let tuningArray = instrumentSetting.tunings[i];
         console.log(tuningArray);
+
         let tuningString = "";
         for(x = 0; x < tuningArray.length; x++){
             tuningString = tuningString + "-" + tuningArray[x];
         }
         tuningString = tuningString.substring(1,tuningString.length);
-        tuningButton.innerText = tuningString;
+
+        tuningOption.innerText = tuningString;
 
 
 
-        instrumentTunings.appendChild(tuningButton);
+        tuningSelect.appendChild(tuningOption);
 
     }
+    instrumentTunings.appendChild(tuningSelect);
     loadChordsFromAPI();
 }
 
-function instrumentTuningChange(element, instrument){
+function instrumentTuningChange(element){
 
-    let tuning_id = element.id.split("_")[1];
-    document.getElementsByClassName("tuningSelected")[0].classList.remove("tuningSelected");
-    element.classList.add("tuningSelected");
+    let tuning_id = element.value;
+    let instrument = document.getElementById("instrumentSelectElement").value;
+
 
     settings.tuning = predefinedinstruments[instrument].tunings[tuning_id];
 

@@ -34,7 +34,7 @@ function loadChordsFromAPI(){
         redirect: "follow"
       };
               //TODO: check if numbers if settings are numbers!
-      fetch('http://192.168.1.100:8080/api/findChordsTransposed?' 
+      fetch(chordiumSettings.apiUrl + "api/findChordsTransposed?" 
         + new URLSearchParams({
             base: settings.key,
             type: settings.type,
