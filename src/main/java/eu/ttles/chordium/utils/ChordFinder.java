@@ -1,7 +1,7 @@
 package eu.ttles.chordium.utils;
-
+import eu.ttles.chordium.api.ApiRequest;
+import eu.ttles.chordium.api.ChordsApiResponse;
 import org.springframework.context.annotation.Configuration;
-
 import java.util.*;
 
 @Configuration
@@ -15,14 +15,18 @@ public class ChordFinder {
     //array of needed tones to form a chord
     private ArrayList<ArrayList<String>> chordTones ;
 
+    //array of actual tones to form a chord
+    private ArrayList<ArrayList<String>> actualChordTones ;
+
     //array of stings (notes on each string) STRING ARE COUNTED FROM 0 (lowest to highest)
     private ArrayList<InstrumetString> instrumentStrings;
 
     private int numberOfStrings;
     private int numberOfFrets;
-    private ArrayList<String> aliases;
+
 
     private final ChordNotationCreator chordNotationCreator;
+
 
 
     public ChordFinder() {
@@ -53,7 +57,7 @@ public class ChordFinder {
             }
 
             chordTones = chordNotationCreator.getWorkingChordTones();
-            this.aliases = chordNotationCreator.getAliases();
+            actualChordTones = chordNotationCreator.getActualChordTones();
 
 
         //generate tones of each string
@@ -163,19 +167,37 @@ public class ChordFinder {
             chordFound.printString();
         }
     }
-    public ArrayList<String> getAliases(){
-        return this.aliases;
-    }
 
-    public ArrayList<Chord> getChords(){
-        this.sortChords();
-        return this.chords;
+
+
+    //form an api response and return it
+    public ChordsApiResponse getApiResponse(ApiRequest apiRequest){
+        //create new response body
+        ChordsApiResponse chordsApiResponse = new ChordsApiResponse();
+        chordPattern currentChordPattern = chordNotationCreator.getCurrentChordPattern();
+
+        //fill the body with values
+        chordsApiResponse.setChordName(currentChordPattern.getFullName());
+        chordsApiResponse.setAliases(currentChordPattern.getAliases());
+        chordsApiResponse.setIntervals(currentChordPattern.getIntervals());
+        chordsApiResponse.setTones(this.actualChordTones);
+
+        //return transposed / or api chord values
+        if(apiRequest.equals(ApiRequest.TRANSPOSED)){
+            chordsApiResponse.setChords(getTransposedChords());
+        }else{
+            chordsApiResponse.setChords(getApiChords());
+        }
+
+        return chordsApiResponse;
     }
 
     //return all chords to api (transposed to be best used with SVGuitar
     public ArrayList<Map<String, Object>> getTransposedChords(){
         this.sortChords();
+
         ArrayList<Map<String, Object>> transposedChords = new ArrayList<>();
+
         for(Chord chord : chords){
             transposedChords.add(chord.getTransposedValues());
         }
@@ -191,6 +213,13 @@ public class ChordFinder {
         }
         return apiValues;
     }
+
+    public ArrayList<Chord> getChords(){
+        this.sortChords();
+        return this.chords;
+    }
+
+
 
     //sort chord array by its complexityScore
     private void sortChords(){

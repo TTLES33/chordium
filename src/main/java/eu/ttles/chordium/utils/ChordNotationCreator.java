@@ -1,10 +1,6 @@
 package eu.ttles.chordium.utils;
 
-import com.sun.tools.javac.Main;
-
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.*;
 
 public class ChordNotationCreator {
@@ -18,7 +14,9 @@ public class ChordNotationCreator {
 
     private final ArrayList<ArrayList<String>> chordActualTones = new ArrayList<>();
     private final ArrayList<ArrayList<String>> chordWorkingTones = new ArrayList<>();
-    private final ArrayList<String> aliases = new ArrayList<>();
+
+    private chordPattern currentChordPattern;
+
 
 
     public ChordNotationCreator() {
@@ -181,6 +179,8 @@ public class ChordNotationCreator {
                 if(pattern.hasAlias(type)){
                     //get intervals
                     int[] tonesIntervals = pattern.getIntervals();
+                    this.currentChordPattern = pattern;
+
                     this.generateTonesFromIntervals(base, tonesIntervals);
                     chordTypeExists = true;
                     break;
@@ -303,8 +303,8 @@ public class ChordNotationCreator {
     public ArrayList<ArrayList<String>> getWorkingChordTones(){
         return this.chordWorkingTones;
     }
-    public ArrayList<String> getAliases(){
-        return this.aliases;
+    public chordPattern getCurrentChordPattern(){
+        return this.currentChordPattern;
     }
     public HashSet<chordPattern> getChordPatterns(){
         return this.chordPatternsSet;

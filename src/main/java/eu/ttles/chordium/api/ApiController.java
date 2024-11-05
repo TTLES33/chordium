@@ -9,7 +9,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -18,25 +17,25 @@ public class ApiController {
 
     //generica values for api
     @GetMapping("/findChords")
-    public ArrayList<Map<String, Object>> findChords(@Autowired ChordFinder chordFinder, @RequestParam() String base, @RequestParam(defaultValue = "") String type, @RequestParam(defaultValue = "EADGBE") String tuning, @RequestParam(defaultValue = "6") Integer numberOfStrings, @RequestParam(defaultValue = "15") Integer numberOfFrets) {
+    public ChordsApiResponse findChords(@Autowired ChordFinder chordFinder, @RequestParam() String base, @RequestParam(defaultValue = "") String type, @RequestParam(defaultValue = "EADGBE") String tuning, @RequestParam(defaultValue = "6") Integer numberOfStrings, @RequestParam(defaultValue = "15") Integer numberOfFrets) {
 
         checkApiMaxValues(base, type, tuning, numberOfStrings, numberOfFrets);
 
         createTuningAndFindChords(chordFinder, base, type, tuning, numberOfStrings, numberOfFrets);
 
-        return chordFinder.getApiChords();
+        return chordFinder.getApiResponse(ApiRequest.APICHORDS);
 
     }
 
     //transposed vales for api using SVGuitar
     @GetMapping("/findChordsTransposed")
-    public ArrayList<Map<String, Object>> findChordsTransposed(@Autowired ChordFinder chordFinder, @RequestParam() String base, @RequestParam(defaultValue = "") String type, @RequestParam(defaultValue = "EADGBE") String tuning, @RequestParam(defaultValue = "6") Integer numberOfStrings, @RequestParam(defaultValue = "15") Integer numberOfFrets) {
+    public ChordsApiResponse findChordsTransposed(@Autowired ChordFinder chordFinder, @RequestParam() String base, @RequestParam(defaultValue = "") String type, @RequestParam(defaultValue = "EADGBE") String tuning, @RequestParam(defaultValue = "6") Integer numberOfStrings, @RequestParam(defaultValue = "15") Integer numberOfFrets) {
 
         checkApiMaxValues(base, type, tuning, numberOfStrings, numberOfFrets);
 
         createTuningAndFindChords(chordFinder, base, type, tuning, numberOfStrings, numberOfFrets);
 
-        return chordFinder.getTransposedChords();
+        return chordFinder.getApiResponse(ApiRequest.TRANSPOSED);
 
     }
 
