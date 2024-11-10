@@ -31,32 +31,6 @@ const predefinedinstruments = {
 const tones = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 
 
-const colors = [
-    "#4E4187",
-    "#2E5266",
-    "#2C6E49",
-    "#5867ff",
-    "#A4243B",
-    "#095256",
-    "#931621",
-    "#2B4570",
-]
-
-
-function colorsShow(){
-    let container = document.getElementById("colors");
-    for(i = 0; i < colors.length; i++){
-        let button = document.createElement("button");
-        button.id = "color_" + i;
-        button.innerHTML = i + 1 + "-" + colors[i];
-        button.onclick = function(){
-            document.documentElement.style.setProperty('--highlightColor', colors[this.id.split("_")[1]]);
-        }
-        container.appendChild(button);
-    }
-    
-}
-
 
 //change chord key 
 function keyChange(element_id){
@@ -67,7 +41,7 @@ function keyChange(element_id){
 
     settings.key = element_id;
     loadingPageAnimationPrepare();
-   loadChordsFromAPI();
+    loadChordsFromAPI();
 }
 
 //change chord type 
@@ -77,13 +51,17 @@ function typeChange(element_id){
     if(element_id == "more"){
         openModal();
     }else{
-     
+        if( document.getElementsByClassName("typeButtonSelected")[0]){
+            document.getElementsByClassName("typeButtonSelected")[0].classList.remove("typeButtonSelected");
+        }
         if(element_id.startsWith("modal_")){
             element_id = element_id.substring(6);
+        }else{
+            document.getElementById(element_id).classList.add("typeButtonSelected");
         }
         console.log(element_id);
-        document.getElementsByClassName("typeButtonSelected")[0].classList.remove("typeButtonSelected");
-        document.getElementById(element_id).classList.add("typeButtonSelected");
+    
+      
         settings.type = element_id;
 
 
@@ -97,16 +75,103 @@ function typeChange(element_id){
 
 }
 
-
-function closeModal(){
-    console.log("Function: closeModal");
-    document.getElementById("typeModal").style.display = "none";
-}
+//open other chord types modal
 function openModal(){
     console.log("Function: openModal");
     document.getElementById("typeModal").style.display = "flex";
+
+    document.body.style.overflow = "hidden";
+
+   listMoreTypes();
+}
+//close other chord types modal
+function closeModal(){
+    console.log("Function: closeModal");
+    document.getElementById("typeModal").style.display = "none";
+    document.body.style.overflow = "auto";
 }
 
+function moreTypesSearch(element){
+    deselectMoreTypesLetters();
+    let searchTerm = element.value;
+    let foundIndexes = [];
+    let foundIndexesTypeIndexes = [];
+    for(i = 0; i < allChordsArray.length; i++){
+        let nestedArray = allChordsArray[i];
+        for(k = 0; k < nestedArray.length; k++){
+            if(nestedArray[k].includes(searchTerm)){
+                foundIndexes.push(i);
+                foundIndexesTypeIndexes.push(k);
+                break;
+            }
+        }
+    }
+    console.log(foundIndexes);
+    listMoreTypes(foundIndexes, foundIndexesTypeIndexes)
+}
+
+function moreTypesAlphabetSearch(element){
+    deselectMoreTypesLetters();
+    let letter = element.innerHTML;
+    document.getElementById('moreTypesSerach').value = "";
+    element.classList.add("alphabetLetterActive");
+
+    let foundIndexes = [];
+
+    for(i = 0; i < allChordsArray.length; i++){
+        let nestedArray = allChordsArray[i];
+        for(k = 0; k < nestedArray.length; k++){
+            if(nestedArray[k].startsWith(letter)){
+                foundIndexes.push(i);
+                break;
+            }
+        }
+    }
+    console.log(foundIndexes);
+    listMoreTypes(foundIndexes)
+
+}
+
+function deselectMoreTypesLetters(){
+    let letters = document.getElementsByClassName("alphabetLetterActive");
+    for(i = 0; i < letters.length; i++){
+        letters[i].className = "alphabetLetter";
+    }
+}
+
+function listMoreTypes(indexes, typeIndexes){
+    let container = document.getElementById("chordSelectorTypesContainer");
+    container.innerHTML = "";
+
+    let insertedItems = 0;
+    for(i = 0; i < allChordsArray.length; i++){
+        if(indexes){
+            if(!indexes.includes(i)){
+                continue;
+            }
+        }
+
+        let typeName = allChordsArray[i][0];
+
+        let type = document.createElement("div");
+            type.className = "chordSelectorType";
+            type.onclick = function(){
+                closeModal();
+                typeChange(this.id);
+            }
+            type.id = "modal_" + typeName;
+            type.innerHTML = typeName;
+            if(indexes && typeIndexes){
+                let foundName = allChordsArray[indexes[insertedItems]][typeIndexes[insertedItems]];
+                if(foundName != typeName){
+                    let alternativeName = "<div class=\"alternativeChordName\"> (" + foundName + ")</div>";
+                    type.innerHTML = type.innerHTML + alternativeName;
+                }
+            }
+        container.appendChild(type);
+        insertedItems++;
+    }
+}
 
 
 
@@ -114,7 +179,7 @@ function openModal(){
 function openMoreSettings(){
     //delete instrument container
     let instrumentSelector = document.getElementById("instrumentSelector");
-    instrumentSelector.innerHTML = "";
+    instrumentSelector.style.display = "none";
 
 
     //get container element
@@ -124,6 +189,20 @@ function openMoreSettings(){
     //create grid element for options
     let formGrid = document.createElement("div");
     formGrid.className = "moreSettingGrid";
+    
+    //back bttn container
+    let backBttnContainer = document.createElement("div");
+    backBttnContainer.className = "instrumentSettingsBackBttnContainer";
+
+    //back bttn
+    let backBttn = document.createElement("div");
+    backBttn.innerHTML = "< basic settings";
+    backBttn.className = "instrumentSettingsBackBttn";
+    backBttn.onclick = function(){
+        closeMoreSettings();
+    }
+    backBttnContainer.appendChild(backBttn);
+    formGrid.appendChild(backBttnContainer);
 
     //number of strings
     let numberOfStringText = document.createElement("div");
@@ -186,6 +265,22 @@ function openMoreSettings(){
     //create custom tuning dialog
     openCustomTuning();
 }
+
+//close dialog for more options
+function closeMoreSettings(){
+    let instrumentSelector = document.getElementById("instrumentSelector");
+    instrumentSelector.style.display = "flex";
+
+    let container = document.getElementById("moreSettingsContainer");
+    container.innerHTML = "";
+
+    instrumentChange();
+    instrumentTuningChange();
+
+
+}
+
+
 
 
 
@@ -305,6 +400,7 @@ function tuningsGenerate(instrument){
     let tuningSelect = document.createElement("select");
     tuningSelect.id = "tuningSelectElement";
     tuningSelect.className = "tuningSelectElement";
+    tuningSelect.autocomplete = "off";
     tuningSelect.oninput = function(){
         instrumentTuningChange(this);
     }
@@ -346,4 +442,6 @@ function instrumentTuningChange(element){
 
     loadChordsFromAPI();
 }
+
+
 

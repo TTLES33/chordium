@@ -13,7 +13,7 @@ function throwError(message){
 
 
     let errorIcon = document.createElement("img");
-        errorIcon.src = "errorIcon.svg";
+        errorIcon.src = "resources/errorIcon.svg";
         errorIcon.className = "errorSvg";
     errorElement.appendChild(errorIcon);
 
