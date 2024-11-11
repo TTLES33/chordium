@@ -22,6 +22,8 @@ public class Chord implements Comparable<Chord>{
 
 
 
+
+
     public Chord(int numberOfStrings){
         this.numberOfStrings = numberOfStrings;
         this.tonesPositions = new ArrayList<>();
@@ -37,6 +39,7 @@ public class Chord implements Comparable<Chord>{
                 this.findBarre();
                 this.findChordWidth();
                 this.computeScore();
+
             }
         }else{
             throw new IllegalArgumentException("Tones out of bounds, trying to set tone on string number " + (this.tonesPositions.size() + 1) + ", number of strings: " + this.numberOfStrings);
@@ -46,9 +49,9 @@ public class Chord implements Comparable<Chord>{
     //checks if chord is created completely (all string have tones set)
     private boolean isComplete(){
         //if chord is made out of only non-played strings
-        if(tonesPositions.stream().filter(o -> o == -1).count() == this.numberOfStrings){
-            return false;
-        }
+//        if(tonesPositions.stream().allMatch(o -> o == -1)){
+//            return false;
+//        }
         return (this.numberOfStrings == this.tonesPositions.size());
 
     }
@@ -59,7 +62,7 @@ public class Chord implements Comparable<Chord>{
             return false;
         }
 
-        findChordWidth();
+
         if(this.chordWidth > maxWidth){
             return false;
         }
@@ -161,21 +164,37 @@ public class Chord implements Comparable<Chord>{
 
     //find barre in chord
     public void findBarre(){
-        if(!isComplete()){
-            throw new RuntimeException("Chord not complete");
+
+        HashMap<Integer, Integer> tonesPositionsMap= new HashMap<>();
+        int lowestTone = Integer.MAX_VALUE;
+
+        //fill tonesPositionsMap with tones counts and find lowest tone
+        for(int i = 0; i < tonesPositions.size(); i++){
+            int currentposition = tonesPositions.get(i);
+
+            //if string is played
+            if(currentposition != -1){
+                //check for lowest tone
+                if(currentposition < lowestTone){
+                    lowestTone = currentposition;
+                }
+                //add tone count to hashmap
+                if(!tonesPositionsMap.containsKey(currentposition)){
+                    tonesPositionsMap.put(currentposition, 1);
+                }else{
+                    tonesPositionsMap.put(currentposition, tonesPositionsMap.get(currentposition) + 1);
+                }
+            }
         }
 
-        //sort array of positions from low to high
-        ArrayList<Integer> tonesPositionsCopy =  new ArrayList<>(tonesPositions);
-        Collections.sort(tonesPositionsCopy);
-
-        //remove all non-played strings
-        tonesPositionsCopy.removeIf(m -> m == -1);
 
 
-        if(tonesPositionsCopy.get(0) != 0 && tonesPositionsCopy.get(1) == tonesPositionsCopy.get(0)){
-            this.barrePosition = tonesPositionsCopy.get(0);
-            this.barreNumberOfPlayedStrings = (int) tonesPositions.stream().filter(m -> Objects.equals(m, tonesPositionsCopy.get(0))).count();
+        //if chord doesn't start at fret 10, if two lowest tones are same (min 2 tones to form a barre)
+        if(lowestTone != 0 && tonesPositionsMap.get(lowestTone) > 1){
+            this.barrePosition = lowestTone;
+
+            this.barreNumberOfPlayedStrings = tonesPositionsMap.get(lowestTone);
+
             for(int i = 0; i < this.tonesPositions.size(); i++ ){
                 if(this.tonesPositions.get(i) == this.barrePosition){
                         this.barreStartString = i;
@@ -188,16 +207,40 @@ public class Chord implements Comparable<Chord>{
 
     //calculate chord complexity score to comparing
     private void computeScore(){
-        int numberOfPlayedString = (int) this.tonesPositions.stream().filter(x-> x>0).count();
+        HashMap<Integer, Integer> tonesCounts = new HashMap<>();
+
+        //fill tonesCounts hashmap with tones counts
+        for(int i = 0; i < this.tonesPositions.size(); i++){
+            int currentPosition = this.tonesPositions.get(i);
+
+            if(!tonesCounts.containsKey(currentPosition)){
+                tonesCounts.put(currentPosition, 1);
+            }else{
+                tonesCounts.put(currentPosition, tonesCounts.get(currentPosition) + 1);
+            }
+        }
+
+        //number of non-played strings
+        int skippedStrings = 0;
+        if(tonesCounts.containsKey(-1)){
+            skippedStrings = tonesCounts.get(-1);
+        }
+
+        //number of empty strings
+        int emptyStrings = 0;
+        if(tonesCounts.containsKey(0)){
+            skippedStrings = tonesCounts.get(0);
+        }
+
+
+        int numberOfPlayedString = this.numberOfStrings - skippedStrings - emptyStrings;
+
         this.compareScore = 100 - 2*this.position - 2*this.chordWidth - numberOfPlayedString;
 
         if(this.barreEndString != 0 || this.barreStartString != 0){
             this.compareScore = this.compareScore - 1;
         }
-        //number of non-played strings
-        int skippedStrings = (int) tonesPositions.stream().filter(m -> m == -1).count();
-        //number of empty strings
-        int emptyStrings = (int) tonesPositions.stream().filter(m -> m == 0).count();
+
 
         if(skippedStrings >= numberOfStrings/2){
             this.compareScore = this.compareScore - 5;

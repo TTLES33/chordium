@@ -89,8 +89,6 @@ public class ChordNotationCreator {
         try{
 
 
-           // InputStream is = getClass().getResourceAsStream("/resources/chordIntervals.txt");
-            //BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
             //load file with all chords
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("chordIntervals.txt");
