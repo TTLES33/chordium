@@ -2,17 +2,20 @@ package eu.ttles.chordium.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class InstrumetString {
 
     //all possible tones
     private final String[] tones = {"G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#"};
+    private HashMap<String, ArrayList<Integer>> tonesMap;
     ArrayList<String> thisString = new ArrayList<>();
 
 
 
     public InstrumetString(String baseTone, int maxPosition) {
         int position = 0;
+        tonesMap = new HashMap<>();
 
         //find tone in array tones from string from argument
         for(int i = 0; i < tones.length; i++) {
@@ -25,9 +28,23 @@ public class InstrumetString {
         //fill string arraylist with all tones on string
         for(int i = 0; i < maxPosition; i++){
 
-            //System.out.println(tones[position]);
 
-            thisString.add(tones[position]);
+            String thisTone = tones[position];
+
+            thisString.add(thisTone);
+
+            //insert position to corresponding tone in hashMap
+            if(!tonesMap.containsKey(thisTone)) {
+                ArrayList listToAdd = new ArrayList<>();
+                listToAdd.add(i);
+
+                tonesMap.put(thisTone, listToAdd);
+            }else{
+                ArrayList listToAdd =  tonesMap.get(thisTone);
+                listToAdd.add(i);
+
+                tonesMap.put(thisTone,listToAdd);
+            }
 
             position++;
             //if all tones are used, start over
@@ -42,18 +59,10 @@ public class InstrumetString {
     //finds positions of tones on this string
     public ArrayList<Integer> findTones(String tone){
         //if string doesnť contain tone at all
-        if(!Arrays.asList(tones).contains(tone)){
+        if(!tonesMap.containsKey(tone)) {
             return new ArrayList<>(0);
         }
-
-        ArrayList<Integer> returnArray = new ArrayList<>();
-        for(int i = 0; i < thisString.size(); i++){
-            if(thisString.get(i).equals(tone)){
-                returnArray.add(i);
-            }
-        }
-        return returnArray;
-
+        return tonesMap.get(tone);
 
     }
 

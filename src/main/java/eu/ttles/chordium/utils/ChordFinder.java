@@ -128,11 +128,7 @@ public class ChordFinder {
 
         Chord newChord = new Chord(numberOfStrings);
 
-        for(int fretPosition : frets){
-            newChord.addTone(fretPosition);
-        }
-
-
+        newChord.addAllTones(frets);
 
         if(newChord.isPlayable(4) && newChord.isCorrect(chordTones, instrumentStrings)){
             chords.add(newChord);

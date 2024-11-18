@@ -46,6 +46,21 @@ public class Chord implements Comparable<Chord>{
         }
     }
 
+    //adds all tones to the chord
+    public void addAllTones(ArrayList<Integer> frets){
+        if(frets.size() != this.numberOfStrings){
+            throw new IllegalArgumentException("exceeds number of tones");
+        }
+
+        this.tonesPositions.addAll(frets);
+
+        if(isComplete()){
+            this.findBarre();
+            this.findChordWidth();
+            this.computeScore();
+        }
+    }
+
     //checks if chord is created completely (all string have tones set)
     private boolean isComplete(){
         //if chord is made out of only non-played strings
@@ -92,7 +107,6 @@ public class Chord implements Comparable<Chord>{
     public boolean isCorrect(ArrayList<ArrayList<String>> tonesChordShouldHave, ArrayList<InstrumetString> instrumetStrings){
 
         if(!isComplete()){
-            System.out.println("Not Complete");
             return false;
         }
 
