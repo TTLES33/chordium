@@ -25,7 +25,7 @@ public class InstrumetString {
         }
 
 
-        //fill string arraylist with all tones on string
+        //fill string hashmap with all tones on string
         for(int i = 0; i < maxPosition; i++){
 
 

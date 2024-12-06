@@ -29,7 +29,7 @@ public class Chord implements Comparable<Chord>{
         this.tonesPositions = new ArrayList<>();
     }
 
-    //adds tone to the chord
+    //adds tone to the chord - depressed
     public void addTone(int tonePosition){
         //check if number of already added tones is less than number of strings
         if(this.tonesPositions.size() < this.numberOfStrings){
@@ -47,18 +47,33 @@ public class Chord implements Comparable<Chord>{
     }
 
     //adds all tones to the chord
-    public void addAllTones(ArrayList<Integer> frets){
+    public boolean addAllTonesIfPossible(int maxChordWidth, int maxNumberOfFingers, ArrayList<Integer> frets, ArrayList<ArrayList<String>> chordTones, ArrayList<InstrumetString> instrumentStrings){
+
+        //check for exceeded number of tones
         if(frets.size() != this.numberOfStrings){
-            throw new IllegalArgumentException("exceeds number of tones");
+            return false;
+            //throw new IllegalArgumentException("exceeds number of tones");
         }
 
+        //add all tones to chord
         this.tonesPositions.addAll(frets);
 
+        if(!this.isPlayable(maxChordWidth, maxNumberOfFingers)){
+            return false;
+        }
+
+        //check if chord is musically correct
+        if(!isCorrect(chordTones, instrumentStrings)){
+            return false;
+        }
+
+        //create all attributes of chord
         if(isComplete()){
             this.findBarre();
             this.findChordWidth();
             this.computeScore();
         }
+        return true;
     }
 
     //checks if chord is created completely (all string have tones set)
@@ -72,7 +87,7 @@ public class Chord implements Comparable<Chord>{
     }
 
     //check if chord is physically possible to play
-    public boolean isPlayable(int maxWidth){
+    public boolean isPlayable(int maxWidth, int maxNumberOfFingers){
         if(!isComplete()){
             return false;
         }
@@ -94,7 +109,7 @@ public class Chord implements Comparable<Chord>{
         }
 
 
-        if((this.numberOfStrings - skippedStrings - barreNumberOfSoundingStringsFingers - emptyStrings) > 4){ //4 fingers to play chord
+        if((this.numberOfStrings - skippedStrings - barreNumberOfSoundingStringsFingers - emptyStrings) > maxNumberOfFingers){ //4 fingers to play chord
             return false;
         }
         //System.out.println(true);
@@ -183,7 +198,9 @@ public class Chord implements Comparable<Chord>{
         int lowestTone = Integer.MAX_VALUE;
 
         //fill tonesPositionsMap with tones counts and find lowest tone
-        for(int i = 0; i < tonesPositions.size(); i++){
+        int tonesPositionsLength = tonesPositions.size();
+
+        for(int i = 0; i < tonesPositionsLength; i++){
             int currentposition = tonesPositions.get(i);
 
             //if string is played

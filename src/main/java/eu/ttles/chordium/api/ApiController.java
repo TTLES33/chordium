@@ -17,11 +17,11 @@ public class ApiController {
 
     //generica values for api
     @GetMapping("/findChords")
-    public ChordsApiResponse findChords(@Autowired ChordFinder chordFinder, @RequestParam() String base, @RequestParam(defaultValue = "") String type, @RequestParam(defaultValue = "EADGBE") String tuning, @RequestParam(defaultValue = "6") Integer numberOfStrings, @RequestParam(defaultValue = "15") Integer numberOfFrets) {
+    public ChordsApiResponse findChords(@Autowired ChordFinder chordFinder, @RequestParam() String base, @RequestParam(defaultValue = "") String type, @RequestParam(defaultValue = "EADGBE") String tuning, @RequestParam(defaultValue = "6") Integer numberOfStrings, @RequestParam(defaultValue = "15") Integer numberOfFrets, @RequestParam(defaultValue = "4") Integer maxChordWidth, @RequestParam(defaultValue = "4") Integer maxNumberOfFingers) {
 
         checkApiMaxValues(base, type, tuning, numberOfStrings, numberOfFrets);
 
-        createTuningAndFindChords(chordFinder, base, type, tuning, numberOfStrings, numberOfFrets);
+        createTuningAndFindChords(chordFinder, base, type, tuning, numberOfStrings, numberOfFrets, maxChordWidth, maxNumberOfFingers);
 
         return chordFinder.getApiResponse(ApiRequest.APICHORDS);
 
@@ -29,11 +29,11 @@ public class ApiController {
 
     //transposed vales for api using SVGuitar
     @GetMapping("/findChordsTransposed")
-    public ChordsApiResponse findChordsTransposed(@Autowired ChordFinder chordFinder, @RequestParam() String base, @RequestParam(defaultValue = "") String type, @RequestParam(defaultValue = "EADGBE") String tuning, @RequestParam(defaultValue = "6") Integer numberOfStrings, @RequestParam(defaultValue = "15") Integer numberOfFrets) {
+    public ChordsApiResponse findChordsTransposed(@Autowired ChordFinder chordFinder, @RequestParam() String base, @RequestParam(defaultValue = "") String type, @RequestParam(defaultValue = "EADGBE") String tuning, @RequestParam(defaultValue = "6") Integer numberOfStrings, @RequestParam(defaultValue = "15") Integer numberOfFrets, @RequestParam(defaultValue = "4") Integer maxChordWidth, @RequestParam(defaultValue = "4") Integer maxNumberOfFingers) {
 
         checkApiMaxValues(base, type, tuning, numberOfStrings, numberOfFrets);
 
-        createTuningAndFindChords(chordFinder, base, type, tuning, numberOfStrings, numberOfFrets);
+        createTuningAndFindChords(chordFinder, base, type, tuning, numberOfStrings, numberOfFrets, maxChordWidth, maxNumberOfFingers);
 
         return chordFinder.getApiResponse(ApiRequest.TRANSPOSED);
 
@@ -50,7 +50,7 @@ public class ApiController {
 
 
     //Api Utils
-    public static void createTuningAndFindChords(@Autowired ChordFinder chordFinder, @RequestParam String base, @RequestParam(defaultValue = "") String type, @RequestParam(defaultValue = "EADGBE") String tuning, @RequestParam(defaultValue = "6") Integer numberOfStrings, @RequestParam(defaultValue = "15") Integer numberOfFrets) {
+    public static void createTuningAndFindChords(@Autowired ChordFinder chordFinder, @RequestParam String base, @RequestParam(defaultValue = "") String type, @RequestParam(defaultValue = "EADGBE") String tuning, @RequestParam(defaultValue = "6") Integer numberOfStrings, @RequestParam(defaultValue = "15") Integer numberOfFrets, @RequestParam(defaultValue = "4") Integer maxChordWidth, @RequestParam(defaultValue = "4") Integer maxNumberOfFingers) {
         //Create tuning ArrayList from String
         ArrayList<String> tuningList = new ArrayList<>();
         for (int i = 0; i < tuning.length(); i++) {
@@ -69,7 +69,7 @@ public class ApiController {
 
         //try to find chords, else throw error
         try {
-            chordFinder.findChord(base, type, numberOfStrings, numberOfFrets, tuningList);
+            chordFinder.findChord(base, type, numberOfStrings, numberOfFrets, tuningList, maxChordWidth, maxNumberOfFingers);
         }catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());

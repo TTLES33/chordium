@@ -23,6 +23,8 @@ public class ChordFinder {
 
     private int numberOfStrings;
     private int numberOfFrets;
+    private int maxChordWidth; // maximum width of chord in frets
+    private int maxNumberOfFingers; //maximum numbers of fingers available to play the chord
 
 
     private final ChordNotationCreator chordNotationCreator;
@@ -34,7 +36,7 @@ public class ChordFinder {
     }
 
 
-    public void findChord(String base, String type, int numberOfStrings, int numberOfFrets, ArrayList<String> instrumentTuning) throws IllegalArgumentException {
+    public void findChord(String base, String type, int numberOfStrings, int numberOfFrets, ArrayList<String> instrumentTuning, int maxChordWidth, int maxNumberOfFingers) throws IllegalArgumentException {
 
         //check if chord finder can be created
         argumentChecker(numberOfStrings, numberOfFrets, instrumentTuning);
@@ -43,6 +45,8 @@ public class ChordFinder {
 
         this.numberOfStrings = numberOfStrings;
         this.numberOfFrets = numberOfFrets;
+        this.maxChordWidth = maxChordWidth;
+        this.maxNumberOfFingers = maxNumberOfFingers;
         this.chords = new ArrayList<>();
         this.chordTones = new ArrayList<>();
         this.instrumentStrings = new ArrayList<>();
@@ -71,14 +75,14 @@ public class ChordFinder {
                 frets.add(-1);
             }
             for(ArrayList<String> chordTonesArray : chordTones){
-                this.findAllChords(chordTonesArray, i, frets);
+                this.findAllChords(chordTonesArray, i, frets, -1);
             }
         }
 
 
     }
     public void findChord(String basePlusType, int numberOfStrings, int numberOfFrets, ArrayList<String> instrumentTuning){
-        this.findChord(basePlusType,"", numberOfStrings, numberOfFrets, instrumentTuning);
+        this.findChord(basePlusType,"", numberOfStrings, numberOfFrets, instrumentTuning, 4, 4);
     }
 
     //check if chord finder can be created (arguments have right formats)
@@ -94,7 +98,7 @@ public class ChordFinder {
 
     //todo: možná rozdělit na podfunkce
     //find all possible combinations of chord by recursively calling itself (finds all possible tones on a string and call itself on the next string)
-    private void findAllChords(ArrayList<String> tonesInChord, int currentInstrumentString, ArrayList<Integer> frets){
+    private void findAllChords(ArrayList<String> tonesInChord, int currentInstrumentString, ArrayList<Integer> frets, int basePosition){
         //currentInstrumentString = string on which is function currently searching
         if(currentInstrumentString < this.numberOfStrings){
             InstrumetString actualString = instrumentStrings.get(currentInstrumentString);
@@ -107,13 +111,23 @@ public class ChordFinder {
 
                 //loop through all positions
                 for(int actualTonePosition : actualTonesPositions){
+                    //if this iteration is first, set chord base fret position to first note
+                    if(basePosition == -1){
+                        basePosition = actualTonePosition;
+                    }
 
-                    //copy array of previous positions to be passed as argument
-                    ArrayList<Integer> newFrets = new ArrayList<>(frets);
-                    int newString = currentInstrumentString + 1;
+                    //if new tone is in playable range (+- 4 frets) continue
+                    boolean isToneInWidthRange = actualTonePosition  >= (basePosition - maxChordWidth) && actualTonePosition <= (basePosition + maxChordWidth);
+                    if(isToneInWidthRange || actualTonePosition == 0){
+                        //copy array of previous positions to be passed as argument
+                        ArrayList<Integer> newFrets = new ArrayList<>(frets);
+                        int newString = currentInstrumentString + 1;
 
-                    newFrets.add(actualTonePosition);
-                    findAllChords(tonesInChord, newString, newFrets);
+                        newFrets.add(actualTonePosition);
+
+                        //recursive call next string
+                        findAllChords(tonesInChord, newString, newFrets, basePosition);
+                    }
                 }
             }
         }else{
@@ -128,9 +142,7 @@ public class ChordFinder {
 
         Chord newChord = new Chord(numberOfStrings);
 
-        newChord.addAllTones(frets);
-
-        if(newChord.isPlayable(4) && newChord.isCorrect(chordTones, instrumentStrings)){
+        if(newChord.addAllTonesIfPossible(maxChordWidth, maxNumberOfFingers,frets, chordTones, instrumentStrings)){
             chords.add(newChord);
         }
     }
