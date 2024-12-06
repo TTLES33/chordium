@@ -151,9 +151,8 @@ public class ChordNotationCreator {
         if(type.isEmpty()){
             type = "maj";
         }
-       // type = type.toLowerCase(); //todo: handle all cases
 
-        //convert harp to b
+        //convert sharp to flat
         if(base.endsWith("#")){
             base = base.substring(0,1);
             if(Arrays.asList(this.tonesFlats).contains(base)){

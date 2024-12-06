@@ -7,8 +7,6 @@ public class ChordiumApplication {
 
     public static void main(String[] args) {
 
-
         SpringApplication.run(ChordiumApplication.class, args);
     }
-
 }

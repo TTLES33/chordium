@@ -13,10 +13,10 @@ public class testClass {
 
         String base = "C";
         String type = "maj";
-        int numberOfStrings = 6;
+        int numberOfStrings = 10;
         int numberOfFrets = 30;
 
-        String tuning = "EADGBE";
+        String tuning = "EADGBEDGBE";
         ChordFinder chordFinder = new ChordFinder();
 
 

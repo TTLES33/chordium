@@ -42,7 +42,7 @@ public class ChordFinder {
         argumentChecker(numberOfStrings, numberOfFrets, instrumentTuning);
 
 
-
+        //set class variables from arguments
         this.numberOfStrings = numberOfStrings;
         this.numberOfFrets = numberOfFrets;
         this.maxChordWidth = maxChordWidth;
@@ -96,7 +96,6 @@ public class ChordFinder {
     }
 
 
-    //todo: možná rozdělit na podfunkce
     //find all possible combinations of chord by recursively calling itself (finds all possible tones on a string and call itself on the next string)
     private void findAllChords(ArrayList<String> tonesInChord, int currentInstrumentString, ArrayList<Integer> frets, int basePosition){
         //currentInstrumentString = string on which is function currently searching
@@ -119,6 +118,7 @@ public class ChordFinder {
                     //if new tone is in playable range (+- 4 frets) continue
                     boolean isToneInWidthRange = actualTonePosition  >= (basePosition - maxChordWidth) && actualTonePosition <= (basePosition + maxChordWidth);
                     if(isToneInWidthRange || actualTonePosition == 0){
+
                         //copy array of previous positions to be passed as argument
                         ArrayList<Integer> newFrets = new ArrayList<>(frets);
                         int newString = currentInstrumentString + 1;
@@ -133,12 +133,10 @@ public class ChordFinder {
         }else{
             this.createNewChord(numberOfStrings, frets);
         }
-
     }
 
     //create chord object and add it array
     private void createNewChord(int numberOfStrings, ArrayList<Integer> frets){
-
 
         Chord newChord = new Chord(numberOfStrings);
 

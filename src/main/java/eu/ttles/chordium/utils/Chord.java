@@ -112,7 +112,7 @@ public class Chord implements Comparable<Chord>{
         if((this.numberOfStrings - skippedStrings - barreNumberOfSoundingStringsFingers - emptyStrings) > maxNumberOfFingers){ //4 fingers to play chord
             return false;
         }
-        //System.out.println(true);
+
         return true;
 
     }
@@ -200,20 +200,18 @@ public class Chord implements Comparable<Chord>{
         //fill tonesPositionsMap with tones counts and find lowest tone
         int tonesPositionsLength = tonesPositions.size();
 
-        for(int i = 0; i < tonesPositionsLength; i++){
-            int currentposition = tonesPositions.get(i);
-
+        for (int currentPosition : tonesPositions) {
             //if string is played
-            if(currentposition != -1){
+            if (currentPosition != -1) {
                 //check for lowest tone
-                if(currentposition < lowestTone){
-                    lowestTone = currentposition;
+                if (currentPosition < lowestTone) {
+                    lowestTone = currentPosition;
                 }
                 //add tone count to hashmap
-                if(!tonesPositionsMap.containsKey(currentposition)){
-                    tonesPositionsMap.put(currentposition, 1);
-                }else{
-                    tonesPositionsMap.put(currentposition, tonesPositionsMap.get(currentposition) + 1);
+                if (!tonesPositionsMap.containsKey(currentPosition)) {
+                    tonesPositionsMap.put(currentPosition, 1);
+                } else {
+                    tonesPositionsMap.put(currentPosition, tonesPositionsMap.get(currentPosition) + 1);
                 }
             }
         }
@@ -241,12 +239,10 @@ public class Chord implements Comparable<Chord>{
         HashMap<Integer, Integer> tonesCounts = new HashMap<>();
 
         //fill tonesCounts hashmap with tones counts
-        for(int i = 0; i < this.tonesPositions.size(); i++){
-            int currentPosition = this.tonesPositions.get(i);
-
-            if(!tonesCounts.containsKey(currentPosition)){
+        for (int currentPosition : this.tonesPositions) {
+            if (!tonesCounts.containsKey(currentPosition)) {
                 tonesCounts.put(currentPosition, 1);
-            }else{
+            } else {
                 tonesCounts.put(currentPosition, tonesCounts.get(currentPosition) + 1);
             }
         }
