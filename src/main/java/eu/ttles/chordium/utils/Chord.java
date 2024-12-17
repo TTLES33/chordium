@@ -92,16 +92,30 @@ public class Chord implements Comparable<Chord>{
             return false;
         }
 
-
         if(this.chordWidth > maxWidth){
             return false;
         }
 
+        HashMap<Integer, Integer> tonesPositionsMap = new HashMap();
+
+        for(Integer tonePosition : this.tonesPositions){
+            if(!tonesPositionsMap.containsKey(tonePosition)){
+                tonesPositionsMap.put(tonePosition, 1);
+            }else{
+                tonesPositionsMap.put(tonePosition, tonesPositionsMap.get(tonePosition) + 1);
+            }
+        }
+
         //number of empty strings
-        int emptyStrings = (int) tonesPositions.stream().filter(m -> m == 0).count();
+        //int emptyStrings = (int) tonesPositions.stream().filter(m -> m == 0).count();
+        int emptyStrings;
+        emptyStrings = tonesPositionsMap.getOrDefault(0, 0);
 
         //number of non-played strings
-        int skippedStrings = (int) tonesPositions.stream().filter(m -> m == -1).count();
+        //int skippedStrings = (int) tonesPositions.stream().filter(m -> m == -1).count();
+        int skippedStrings;
+        skippedStrings = tonesPositionsMap.getOrDefault(-1, 0);
+
 
         int barreNumberOfSoundingStringsFingers = barreNumberOfPlayedStrings;
         if(barreNumberOfPlayedStrings > 0){
@@ -128,9 +142,12 @@ public class Chord implements Comparable<Chord>{
         //generate array of tones(strings) from int positions
         ArrayList<String> generatedTones = new ArrayList<>();
         for(int i = 0; i < tonesPositions.size(); i++){
+            int currentPosition = tonesPositions.get(i);
+
             //skip non played strings
-            if(tonesPositions.get(i) != -1){
-                generatedTones.add(instrumetStrings.get(i).findToneByPosition(tonesPositions.get(i)));
+            if(currentPosition != -1){
+                InstrumetString currentString = instrumetStrings.get(i);
+                generatedTones.add(currentString.findToneByPosition(currentPosition));
             }
         }
 
@@ -145,7 +162,6 @@ public class Chord implements Comparable<Chord>{
 
         // Iterate over each sublist in tonesChordShouldHave
         for (ArrayList<String> sublist : tonesChordShouldHave) {
-
             // Check if the current sublist contains all elements from uniqueElements and vise versa
             if (sublist.containsAll(uniqueElements) && uniqueElements.containsAll(sublist)) {
                 //System.out.println(true);

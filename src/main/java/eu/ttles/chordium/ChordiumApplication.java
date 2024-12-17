@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ChordiumApplication {
 
     public static void main(String[] args) {
-
+        System.out.println("starting app...");
         SpringApplication.run(ChordiumApplication.class, args);
     }
 }
