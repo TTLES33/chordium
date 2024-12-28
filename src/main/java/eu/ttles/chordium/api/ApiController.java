@@ -11,13 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-
-import javax.swing.text.html.parser.Entity;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin(origins = "*")
@@ -153,14 +149,47 @@ public class ApiController {
         if(type.length() > 10){
             throw new IllegalArgumentException("type not legal value");
         }
-        if(numberOfStrings > 30){
-            throw new IllegalArgumentException("exceeds max number of strings (30)");
+        if(numberOfStrings > 16){
+            throw new IllegalArgumentException("exceeds max number of strings (16)");
         }
         if(numberOfFrets > 50){
             throw new IllegalArgumentException("exceeds max number of frets (50)");
         }
         if(tuning.length() > 30){
             throw new IllegalArgumentException("exceeds max number of tones in tuning (30)");
+        }
+
+
+
+        //        nmb of strings
+//          0 - 10 --- 50
+//          11 - 12 --- 30
+//          13      --- 15
+//          14      --- 12
+//          15      --- 12
+//          16      --- 10
+
+        if(numberOfStrings <=10){
+            if(numberOfFrets > 50){
+                throw new IllegalArgumentException("exceeds max number of frets and strings");
+            }
+        } else if (numberOfStrings <= 12) {
+            if(numberOfFrets > 30){
+                throw new IllegalArgumentException("exceeds max number of frets and strings");
+            }
+        }else if(numberOfStrings == 13) {
+            if (numberOfFrets > 15) {
+                throw new IllegalArgumentException("exceeds max number of frets and strings");
+            }
+        } else if (numberOfStrings == 14 || numberOfStrings == 15) {
+            if (numberOfFrets > 12) {
+                throw new IllegalArgumentException("exceeds max number of frets and strings");
+            }
+        }
+        else if (numberOfStrings == 16) {
+            if (numberOfFrets > 10) {
+                throw new IllegalArgumentException("exceeds max number of frets and strings");
+            }
         }
     }
     }
