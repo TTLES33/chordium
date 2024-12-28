@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.UUID;
 
+
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path="/api", produces="application/json")
@@ -49,23 +51,29 @@ public class ApiController {
 
 
         try {
+
             ObjectMapper objectMapper = new ObjectMapper();
 
+            //save api response as string
             String jsonArray = objectMapper.writeValueAsString(chordFinder.getApiResponse(ApiRequest.TRANSPOSED));
-            //System.out.println(jsonArray);
 
+            //create custom uuid file name
             UUID uuid = UUID.randomUUID();
             String fileName = uuid.toString() + ".json";
 
-            File jsonFile = new File(fileName);
+            //create new file
+            File jsonFile = new File("cacheFiles/" + fileName);
             jsonFile.createNewFile();
 
-            BufferedWriter myWriter = new BufferedWriter(new FileWriter(fileName, true));
+            //write response to file
+            BufferedWriter myWriter = new BufferedWriter(new FileWriter("cacheFiles/" + fileName, true));
             myWriter.write(jsonArray);
             myWriter.close();
 
 
-            File file = ResourceUtils.getFile(fileName);
+            File file = ResourceUtils.getFile("cacheFiles/" + fileName);
+
+
 
             // read file size
             long fileSizeInBytes = file.length();
@@ -95,15 +103,12 @@ public class ApiController {
             System.out.println("Error: " + e.getMessage());
         }
 
+        //calculate time elapsed
         long finish = System.currentTimeMillis();
         long timeElapsed = finish - requestStart;
         System.out.println("    Time elapsed: " + timeElapsed);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            //System.out.println(chordFinder.getApiChords());
-
-        //return chordFinder.getApiResponse(ApiRequest.TRANSPOSED);
-
     }
 
     @GetMapping("/getAllChordsInfo")
@@ -131,7 +136,6 @@ public class ApiController {
                 }
             }
         }
-       // System.out.println("tuningList: " + tuningList);
 
         //try to find chords, else throw error
         try {
@@ -161,13 +165,14 @@ public class ApiController {
 
 
 
-        //        nmb of strings
-//          0 - 10 --- 50
-//          11 - 12 --- 30
-//          13      --- 15
-//          14      --- 12
-//          15      --- 12
-//          16      --- 10
+        //check for advanced max values
+//        max nmb. of strings        max nmr. of frets
+//          0 - 10              ---     50
+//          11 - 12             ---     30
+//          13                  ---     15
+//          14                  ---     12
+//          15                  ---     12
+//          16                  ---     10
 
         if(numberOfStrings <=10){
             if(numberOfFrets > 50){

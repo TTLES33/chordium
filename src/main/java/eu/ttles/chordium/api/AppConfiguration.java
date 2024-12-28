@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
+
 @Configuration
 
 public class AppConfiguration {
@@ -25,6 +26,7 @@ public class AppConfiguration {
         System.out.println("| \\__/\\| | | || (_) || |   | (_| || || |_| || | | | | |");
         System.out.println(" \\____/|_| |_| \\___/ |_|    \\__,_||_| \\__,_||_| |_| |_|");
         System.out.println();
+        System.out.println("Version: 2024-1.2.0-BETA");
         System.out.println("App started - listening on port 8080");
     }
 }
