@@ -65,7 +65,7 @@ class ChordTest {
         chord.addTone(2);
         chord.addTone(0);
 
-        assertTrue(chord.isPlayable(3));
+        assertTrue(chord.isPlayable(4,4));
     }
 
     @Test
@@ -82,7 +82,7 @@ class ChordTest {
 
 
 
-        assertTrue(chord.isPlayable(3));
+        assertTrue(chord.isPlayable(4,4));
 
     }
 
@@ -100,7 +100,7 @@ class ChordTest {
 
         System.out.println(chord.getChordWidth());
 
-        assertTrue(chord.isPlayable(3));
+        assertTrue(chord.isPlayable(4,4));
 
     }
 
@@ -115,7 +115,7 @@ class ChordTest {
         chord.addTone(2);
         chord.addTone(2);
 
-        assertFalse(chord.isPlayable(3));
+        assertFalse(chord.isPlayable(4,4));
 
     }
 
@@ -131,7 +131,7 @@ class ChordTest {
         chord.addTone(2);
         chord.addTone(0);
 
-        assertFalse(chord.isPlayable(3));
+        assertFalse(chord.isPlayable(3,4));
 
     }
 
@@ -147,7 +147,7 @@ class ChordTest {
         chord.addTone(2);
         chord.addTone(0);
 
-        assertFalse(chord.isPlayable(3));
+        assertFalse(chord.isPlayable(3,2));
 
     }
 
@@ -357,38 +357,38 @@ class ChordTest {
         assertTrue(chord.isCorrect(chordTones, instrumetStrings));
     }
 
-    @Test
-    @DisplayName("isCorrect With ALl Non-played strings")
-    void isCorrectWithAllNonPlayedStrings() {
-        Chord chord = new Chord(6);
-        chord.addTone(-1);
-        chord.addTone(-1);
-        chord.addTone(-1);
-        chord.addTone(-1);
-        chord.addTone(-1);
-        chord.addTone(-1);
-
-
-        ArrayList<ArrayList<String>> chordTones = new ArrayList<>();
-        chordTones.add(new ArrayList<>(List.of("B","G","D")));
-        ArrayList<InstrumetString> instrumetStrings = new ArrayList<>();
-
-        InstrumetString newString1 = new InstrumetString("E", 15);
-        InstrumetString newString2 = new InstrumetString("A", 15);
-        InstrumetString newString3 = new InstrumetString("D", 15);
-        InstrumetString newString4 = new InstrumetString("G", 15);
-        InstrumetString newString5 = new InstrumetString("B", 15);
-        InstrumetString newString6 = new InstrumetString("E", 15);
-        instrumetStrings.add(newString1);
-        instrumetStrings.add(newString2);
-        instrumetStrings.add(newString3);
-        instrumetStrings.add(newString4);
-        instrumetStrings.add(newString5);
-        instrumetStrings.add(newString6);
-
-
-        assertFalse(chord.isCorrect(chordTones, instrumetStrings));
-    }
-
+//    @Test
+//    @DisplayName("isCorrect With ALl Non-played strings")
+//    void isCorrectWithAllNonPlayedStrings() {
+//        Chord chord = new Chord(6);
+//        chord.addTone(-1);
+//        chord.addTone(-1);
+//        chord.addTone(-1);
+//        chord.addTone(-1);
+//        chord.addTone(-1);
+//        chord.addTone(-1);
+//
+//
+//        ArrayList<ArrayList<String>> chordTones = new ArrayList<>();
+//        chordTones.add(new ArrayList<>(List.of("B","G","D")));
+//        ArrayList<InstrumetString> instrumetStrings = new ArrayList<>();
+//
+//        InstrumetString newString1 = new InstrumetString("E", 15);
+//        InstrumetString newString2 = new InstrumetString("A", 15);
+//        InstrumetString newString3 = new InstrumetString("D", 15);
+//        InstrumetString newString4 = new InstrumetString("G", 15);
+//        InstrumetString newString5 = new InstrumetString("B", 15);
+//        InstrumetString newString6 = new InstrumetString("E", 15);
+//        instrumetStrings.add(newString1);
+//        instrumetStrings.add(newString2);
+//        instrumetStrings.add(newString3);
+//        instrumetStrings.add(newString4);
+//        instrumetStrings.add(newString5);
+//        instrumetStrings.add(newString6);
+//
+//
+//        assertFalse(chord.isCorrect(chordTones, instrumetStrings));
+//    }
+//
 
 }

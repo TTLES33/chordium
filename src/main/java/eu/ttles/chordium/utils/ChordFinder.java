@@ -10,7 +10,8 @@ public class ChordFinder {
     private final String[] tones = {"G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#"};
 
     //array of generated chords
-    private ArrayList<Chord> chords;
+    private ArrayList<Chord> chords; //array of generated chords (used for sorting chords)
+    private HashSet<Integer> chordsHashSet; //set of generated chords (used for adding new and checking for existing ones)
 
     //array of needed tones to form a chord
     private ArrayList<ArrayList<String>> chordTones ;
@@ -50,6 +51,7 @@ public class ChordFinder {
         this.maxChordWidth = maxChordWidth;
         this.maxNumberOfFingers = maxNumberOfFingers;
         this.chords = new ArrayList<>();
+        this.chordsHashSet = new HashSet<>();
         this.chordTones = new ArrayList<>();
         this.instrumentStrings = new ArrayList<>();
 
@@ -68,7 +70,6 @@ public class ChordFinder {
 
         //generate tones of each string
         this.generateStrings(numberOfFrets, instrumentTuning);
-
 
         //run findAllChords function for every possible tone combination in chord
         for(ArrayList<String> chordTonesArray : chordTones){
@@ -100,6 +101,7 @@ public class ChordFinder {
     private void findAllChords(ArrayList<String> tonesInChord, int currentInstrumentString, ArrayList<Integer> frets, int basePosition, ArrayList<String> usedTones){
         //currentInstrumentString = string on which is function currently searching
         if(currentInstrumentString >= 0){
+
             InstrumetString actualString = instrumentStrings.get(this.numberOfStrings - 1 - currentInstrumentString);
 
             //loop through every tone in chord
@@ -115,13 +117,15 @@ public class ChordFinder {
                 for(int actualTonePosition : actualTonesPositions){
 
                     //if this iteration is first, set chord base fret position to first note
-                    if(basePosition == -1){
-                        basePosition = actualTonePosition;
+                    int newBasePosition = basePosition;
+                    if(newBasePosition == -1){
+                        newBasePosition = actualTonePosition;
                     }
 
                     //if new tone is in playable range (+- 4 frets) continue
-                    boolean isToneInWidthRange = actualTonePosition  >= (basePosition - maxChordWidth) && actualTonePosition <= (basePosition + maxChordWidth);
+                    boolean isToneInWidthRange = (actualTonePosition  >= (newBasePosition - maxChordWidth)) && (actualTonePosition <= (newBasePosition + maxChordWidth));
                     if(isToneInWidthRange || actualTonePosition == 0){
+                    //if(isToneInWidthRange){
 
                         //copy array of previous positions to be passed as argument
                         ArrayList<Integer> newFrets = new ArrayList<>(frets);
@@ -130,7 +134,7 @@ public class ChordFinder {
                         newFrets.add(actualTonePosition);
 
                         //recursive call next string
-                        findAllChords(tonesInChord, newString, newFrets, basePosition, usedTonesCopy);
+                        findAllChords(tonesInChord, newString, newFrets, newBasePosition, usedTonesCopy);
                     }
                 }
             }
@@ -149,7 +153,7 @@ public class ChordFinder {
         //increasingly add non played strings from lowest to highest
         for(int i = 0; i < usedTones.size(); i++){
 
-            //copy and remove first element from usedTones array
+            //copy and remove first(lowest) element from usedTones array
             ArrayList<String> usedTonesReduced = new ArrayList<>(usedTones);
             usedTonesReduced.removeFirst();
 
@@ -172,13 +176,21 @@ public class ChordFinder {
 
     //create chord object and add it array
     private void createNewChord(ArrayList<Integer> frets){
-
+        //create new chord object
         Chord newChord = new Chord(this.numberOfStrings);
-        System.out.println(frets);
-        boolean isPossible = newChord.addAllTonesIfPossible(maxChordWidth, maxNumberOfFingers, frets, chordTones, instrumentStrings);
-        System.out.println(isPossible);
-        if(isPossible){
-            chords.add(newChord);
+
+
+        //create new chord hash for comparing
+        int chordHash = Objects.hashCode(frets);
+
+        //check if this chord has already been created
+        if(!chordsHashSet.contains(chordHash)){
+            boolean isPossible = newChord.addAllTonesIfPossible(maxChordWidth, maxNumberOfFingers, frets, chordTones, instrumentStrings);
+            chordsHashSet.add(chordHash);
+            if(isPossible){
+                chords.add(newChord);
+            }
+        }else{
         }
     }
 
@@ -216,7 +228,9 @@ public class ChordFinder {
     //form an api response and return it
     public ChordsApiResponse getApiResponse(ApiRequest apiRequest){
 
-
+//        if(chords.size() != chordsHashSet.size()){
+//            chords = new ArrayList<>(chordsHashSet);
+//        }
 
         //create new response body
         ChordsApiResponse chordsApiResponse = new ChordsApiResponse();
@@ -227,6 +241,8 @@ public class ChordFinder {
         chordsApiResponse.setAliases(currentChordPattern.getAliases());
         chordsApiResponse.setIntervals(currentChordPattern.getIntervals());
         chordsApiResponse.setTones(this.actualChordTones);
+        chordsApiResponse.setMaxChordWidth(this.maxChordWidth);
+
 
 
 
@@ -246,9 +262,9 @@ public class ChordFinder {
         this.sortChords();
 
         ArrayList<Map<String, Object>> transposedChords = new ArrayList<>();
-        System.out.println("Length: " + chords.size());
+        System.out.println("    Number of generated chords: " + chords.size());
+
         for(Chord chord : chords){
-            System.out.println(chord.getApiValues());
             transposedChords.add(chord.getTransposedValues());
         }
         return transposedChords;

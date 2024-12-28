@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Chord implements Comparable<Chord>{
 
-    //fret positions of each tone (all strings)
+    //fret positions of each tone (all strings) - from lowest to highests
     ArrayList<Integer> tonesPositions;
     private int position = 1; //position of chord on fretboard
 
@@ -58,21 +58,28 @@ public class Chord implements Comparable<Chord>{
         //add all tones to chord
         this.tonesPositions.addAll(frets);
 
-        if(!this.isPlayable(maxChordWidth, maxNumberOfFingers)){
-            return false;
-        }
 
         //check if chord is musically correct
         if(!isCorrect(chordTones, instrumentStrings)){
             return false;
         }
 
-        //create all attributes of chord
-        if(isComplete()){
-            this.findBarre();
-            this.findChordWidth();
-            this.computeScore();
+
+        this.findChordWidth();
+        if(this.chordWidth > maxChordWidth){
+            return false;
         }
+
+        //find barre, and if chord is playable
+        this.findBarre();
+        if(!this.isPlayable(maxChordWidth, maxNumberOfFingers)){
+            return false;
+        }
+
+
+        //create all attributes of chord
+        this.computeScore();
+
         return true;
     }
 
@@ -98,6 +105,7 @@ public class Chord implements Comparable<Chord>{
 
         HashMap<Integer, Integer> tonesPositionsMap = new HashMap();
 
+        //create hashmap of tones positions counts
         for(Integer tonePosition : this.tonesPositions){
             if(!tonesPositionsMap.containsKey(tonePosition)){
                 tonesPositionsMap.put(tonePosition, 1);
@@ -186,12 +194,13 @@ public class Chord implements Comparable<Chord>{
 
         for(int i = 1; i <this.tonesPositions.size(); i++){
 
-            //if actual position < previous minPosition, and it is > 0 or minPosition is non-played string
-            if((this.tonesPositions.get(i) < minPostition && this.tonesPositions.get(i) > 0)   ||  minPostition == -1) {
-                minPostition = this.tonesPositions.get(i);
+            int currentPosition = this.tonesPositions.get(i);
+            //if current position < previous minPosition, and it is > 0 or minPosition is non-played string
+            if((currentPosition < minPostition && currentPosition > 0)   ||  minPostition == -1) {
+                minPostition = currentPosition;
             }
-            if(this.tonesPositions.get(i) > maxPostition){
-                maxPostition = this.tonesPositions.get(i);
+            if(currentPosition > maxPostition){
+                maxPostition = currentPosition;
             }
         }
 
@@ -214,8 +223,6 @@ public class Chord implements Comparable<Chord>{
         int lowestTone = Integer.MAX_VALUE;
 
         //fill tonesPositionsMap with tones counts and find lowest tone
-        int tonesPositionsLength = tonesPositions.size();
-
         for (int currentPosition : tonesPositions) {
             //if string is played
             if (currentPosition != -1) {
@@ -234,7 +241,7 @@ public class Chord implements Comparable<Chord>{
 
 
 
-        //if chord doesn't start at fret 10, if two lowest tones are same (min 2 tones to form a barre)
+        //if chord doesn't start at fret 0, if two lowest tones are same (min 2 tones to form a barre)
         if(lowestTone != 0 && tonesPositionsMap.get(lowestTone) > 1){
             this.barrePosition = lowestTone;
 
@@ -272,7 +279,7 @@ public class Chord implements Comparable<Chord>{
         //number of empty strings
         int emptyStrings = 0;
         if(tonesCounts.containsKey(0)){
-            skippedStrings = tonesCounts.get(0);
+            emptyStrings = tonesCounts.get(0);
         }
 
 
@@ -286,7 +293,7 @@ public class Chord implements Comparable<Chord>{
 
 
         if(skippedStrings >= numberOfStrings/2){
-            this.compareScore = this.compareScore - 5;
+            this.compareScore = this.compareScore - 15;
         }
         if(skippedStrings  +  emptyStrings == this.numberOfStrings){
             this.compareScore = this.compareScore - 50;
@@ -351,7 +358,7 @@ public class Chord implements Comparable<Chord>{
             if (currentFret == -1 || currentFret == 0) {
                 transposedTonesPositions.add(currentFret);
             } else {
-                if (this.position == 0) {
+                if (apiPosition == 0) {
                     transposedTonesPositions.add(currentFret - position);
                 } else {
                     transposedTonesPositions.add(currentFret - position + 1);
@@ -389,6 +396,7 @@ public class Chord implements Comparable<Chord>{
         transposedValues.put("chordPosition", apiPosition);
         transposedValues.put("barres", barres);
         transposedValues.put("tonePositions", transposedTonesPositions);
+        transposedValues.put("score", this.compareScore);
 
         return transposedValues;
     }
@@ -413,6 +421,13 @@ public class Chord implements Comparable<Chord>{
     public ArrayList<Integer> getTonePositions(){
         return this.tonesPositions;
     }
+
+    @Override
+    public int hashCode(){
+        System.out.println(this.tonesPositions);
+        return Objects.hashCode(this.tonesPositions);
+    }
+
 
     @Override
     public int compareTo(Chord o) {

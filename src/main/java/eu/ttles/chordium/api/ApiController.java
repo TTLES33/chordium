@@ -25,7 +25,9 @@ import java.util.UUID;
 @RequestMapping(path="/api", produces="application/json")
 public class ApiController {
 
+    //depresed
     //generica values for api
+    //todo: check non transposed resposes
     @GetMapping("/findChords")
     public ChordsApiResponse findChords(@RequestParam() String base, @RequestParam(defaultValue = "") String type, @RequestParam(defaultValue = "EADGBE") String tuning, @RequestParam(defaultValue = "6") Integer numberOfStrings, @RequestParam(defaultValue = "15") Integer numberOfFrets, @RequestParam(defaultValue = "4") Integer maxChordWidth, @RequestParam(defaultValue = "4") Integer maxNumberOfFingers) {
         ChordFinder chordFinder = new ChordFinder();
@@ -39,8 +41,10 @@ public class ApiController {
 
     //transposed vales for api using SVGuitar
     @GetMapping("/findChordsTransposed")
-    @CrossOrigin(origins = "http://localhost")
     public ResponseEntity<?> findChordsTransposed(@RequestParam() String base, @RequestParam(defaultValue = "") String type, @RequestParam(defaultValue = "EADGBE") String tuning, @RequestParam(defaultValue = "6") Integer numberOfStrings, @RequestParam(defaultValue = "15") Integer numberOfFrets, @RequestParam(defaultValue = "4") Integer maxChordWidth, @RequestParam(defaultValue = "4") Integer maxNumberOfFingers) {
+
+        System.out.println("New request - base:" + base + ", type:" + type + ", tuning:" + tuning + ", numberOfStrings:" + numberOfStrings + ", numberOfFrets:" + numberOfFrets + maxChordWidth + ", maxNumberOfFings:" + maxNumberOfFingers);
+        long requestStart = System.currentTimeMillis();
 
         ChordFinder chordFinder = new ChordFinder();
         checkApiMaxValues(base, type, tuning, numberOfStrings, numberOfFrets);
@@ -75,11 +79,16 @@ public class ApiController {
             InputStreamResource inputStreamResource = new InputStreamResource(fileInputStream);
 
 
+            long finish = System.currentTimeMillis();
+            long timeElapsed = finish - requestStart;
+            System.out.println("    Response: " + fileName);
+            System.out.println("    Time elapsed: " + timeElapsed + "ms");
+
 
             // return the input stream a response
             return ResponseEntity.ok()
                     .contentLength(fileSizeInBytes)
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .contentType(MediaType.APPLICATION_JSON)
                     .header("Content-Disposition", "attachment; filename=\"" + fileName + "\"")
                     .body(inputStreamResource);
 
@@ -89,6 +98,10 @@ public class ApiController {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
+
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - requestStart;
+        System.out.println("    Time elapsed: " + timeElapsed);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             //System.out.println(chordFinder.getApiChords());
@@ -121,9 +134,8 @@ public class ApiController {
                     i++;
                 }
             }
-
         }
-        System.out.println("tuningList: " + tuningList);
+       // System.out.println("tuningList: " + tuningList);
 
         //try to find chords, else throw error
         try {

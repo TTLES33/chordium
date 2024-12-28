@@ -12,6 +12,8 @@ public class ChordsApiResponse {
     private ArrayList<Map<String, Object>> chords;
     private ArrayList<ArrayList<String>> tones;
     private int[] intervals;
+    private int maxChordWidth;
+    private int score;
     public ChordsApiResponse() {
 
     }
@@ -29,6 +31,9 @@ public class ChordsApiResponse {
     }
     public void setIntervals(int[] intervals) {
         this.intervals = intervals;
+    }
+    public void setMaxChordWidth(int maxChordWidth) {
+        this.maxChordWidth = maxChordWidth;
     }
 
 
@@ -49,5 +54,9 @@ public class ChordsApiResponse {
     public int[] getIntervals() {
         return intervals;
     }
+    public int getMaxChordWidth() {
+        return this.maxChordWidth;
+    }
+
 
 }
