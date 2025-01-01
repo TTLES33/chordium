@@ -41,7 +41,7 @@ public class ApiController {
     @GetMapping("/findChordsTransposed")
     public ResponseEntity<?> findChordsTransposed(@RequestParam() String base, @RequestParam(defaultValue = "") String type, @RequestParam(defaultValue = "EADGBE") String tuning, @RequestParam(defaultValue = "6") Integer numberOfStrings, @RequestParam(defaultValue = "15") Integer numberOfFrets, @RequestParam(defaultValue = "4") Integer maxChordWidth, @RequestParam(defaultValue = "4") Integer maxNumberOfFingers) {
 
-        System.out.println("New request - base:" + base + ", type:" + type + ", tuning:" + tuning + ", numberOfStrings:" + numberOfStrings + ", numberOfFrets:" + numberOfFrets + maxChordWidth + ", maxNumberOfFings:" + maxNumberOfFingers);
+        System.out.println("New request - base:" + base + ", type:" + type + ", tuning:" + tuning + ", numberOfStrings:" + numberOfStrings + ", numberOfFrets:" + numberOfFrets + ", maxChordWidth:" +  maxChordWidth + ", maxNumberOfFings:" + maxNumberOfFingers);
         long requestStart = System.currentTimeMillis();
 
         ChordFinder chordFinder = new ChordFinder();
