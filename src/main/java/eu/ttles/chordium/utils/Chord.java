@@ -366,6 +366,20 @@ public class Chord implements Comparable<Chord>{
             }
         }
 
+        //generate barre object
+        if(barreEndString != 0 || barreStartString != 0){
+            Map<String, Integer> barre = new HashMap<>();
+            barre.put("toString", reversedTonesPositions.size() - barreEndString);
+            barre.put("fromString", reversedTonesPositions.size() - barreStartString);
+
+            if(this.position == 2){
+                barre.put("fret", this.barrePosition - this.position + 2);
+            }else{
+                barre.put("fret", this.barrePosition - this.position + 1);
+            }
+            barres.add(barre);
+        }
+
         //if chord position == 2, expend chord by 1 fret, so it starts at 1st fret
         if(this.position == 2){
             apiPosition = 1;
@@ -382,14 +396,7 @@ public class Chord implements Comparable<Chord>{
             apiChordWidth = 4;
         }
 
-        //generate barre object
-        if(barreEndString != 0 || barreStartString != 0){
-            Map<String, Integer> barre = new HashMap<>();
-            barre.put("toString", reversedTonesPositions.size() - barreEndString);
-            barre.put("fromString", reversedTonesPositions.size() - barreStartString);
-            barre.put("fret", this.barrePosition - this.position + 1);
-            barres.add(barre);
-        }
+
 
         //create returning hashmap
         transposedValues.put("chordWidth", apiChordWidth);
