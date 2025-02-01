@@ -1,12 +1,12 @@
 
 plugins {
     java
-    id("org.springframework.boot") version "3.3.4"
+    id("org.springframework.boot") version "3.4.1"
     id("io.spring.dependency-management") version "1.1.6"
 }
 
 group = "eu.ttles.chordium"
-version = "1.0.4-BETA"
+version = "2024-1.2.2-BETA"
 
 java {
     toolchain {

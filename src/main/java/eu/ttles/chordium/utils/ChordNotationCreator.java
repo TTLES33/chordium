@@ -242,7 +242,7 @@ public class ChordNotationCreator {
 
             int currentIndex = firstIndex + currentInterval;
 
-            if(currentIndex >= 12){
+            while (currentIndex >= 12){
                 currentIndex = currentIndex - 12;
             }
 
