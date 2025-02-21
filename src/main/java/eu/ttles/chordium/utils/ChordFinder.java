@@ -28,7 +28,6 @@ public class ChordFinder {
     private int maxNumberOfFingers; //maximum numbers of fingers available to play the chord
 
 
-    private int zkouseneKombinace = 0;
 
     private final ChordNotationCreator chordNotationCreator;
 
@@ -54,6 +53,7 @@ public class ChordFinder {
         this.chordsHashSet = new HashSet<>();
         this.chordTones = new ArrayList<>();
         this.instrumentStrings = new ArrayList<>();
+        this.actualChordTones = new ArrayList<>();
 
 
 
@@ -242,6 +242,7 @@ public class ChordFinder {
         chordsApiResponse.setIntervals(currentChordPattern.getIntervals());
         chordsApiResponse.setTones(this.actualChordTones);
         chordsApiResponse.setMaxChordWidth(this.maxChordWidth);
+
 
 
 

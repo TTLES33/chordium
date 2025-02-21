@@ -13,7 +13,6 @@ public class ChordsApiResponse {
     private ArrayList<ArrayList<String>> tones;
     private int[] intervals;
     private int maxChordWidth;
-    private int score;
     public ChordsApiResponse() {
 
     }

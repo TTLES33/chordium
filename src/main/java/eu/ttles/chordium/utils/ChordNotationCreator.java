@@ -146,6 +146,10 @@ public class ChordNotationCreator {
     //generate chord tones by its name (base + type)
     public void generateTonesByChordName(String base, String type) throws IllegalArgumentException{
 
+        //clear possible previously generated data
+        this.chordActualTones.clear();
+        this.chordWorkingTones.clear();
+
         base = base.toUpperCase();
 
         if(type.isEmpty()){
