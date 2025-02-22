@@ -16,6 +16,11 @@ public class AppConfiguration {
         return new ChordFinder();
     }
 
+    @Bean
+    public DatabaseController databaseController(){
+        return new DatabaseController();
+    }
+
     @EventListener(ApplicationReadyEvent.class)
     public void doSomethingAfterStartup() {
         System.out.println("-----------------------------------------------------------------------------");

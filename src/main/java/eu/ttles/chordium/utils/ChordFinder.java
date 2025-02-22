@@ -242,6 +242,7 @@ public class ChordFinder {
         chordsApiResponse.setIntervals(currentChordPattern.getIntervals());
         chordsApiResponse.setTones(this.actualChordTones);
         chordsApiResponse.setMaxChordWidth(this.maxChordWidth);
+        chordsApiResponse.setGenerated(true);
 
 
 
