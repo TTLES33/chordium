@@ -12,7 +12,7 @@ public class DatabaseController {
 
     private final String DB_URL = "jdbc:sqlite:chordDatabase.db";
     private Connection conn;
-    private ChordNotationCreator notationCreator;
+    private final ChordNotationCreator notationCreator;
 
 
     public DatabaseController() {
@@ -48,11 +48,8 @@ public class DatabaseController {
             //execute sql
             ResultSet rs = stmt.executeQuery();
 
-            if (rs.isBeforeFirst() ) {
-                return true;
-            }
-            return false;
-
+            //if there are 1 or more records
+            return rs.isBeforeFirst();
 
 
         }catch (Exception e) {

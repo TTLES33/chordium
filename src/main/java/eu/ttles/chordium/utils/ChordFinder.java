@@ -190,7 +190,6 @@ public class ChordFinder {
             if(isPossible){
                 chords.add(newChord);
             }
-        }else{
         }
     }
 
