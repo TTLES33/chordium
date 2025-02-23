@@ -1,6 +1,7 @@
 package eu.ttles.chordium.api;
 
 import eu.ttles.chordium.utils.ChordFinder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +34,13 @@ public class AppConfiguration {
         System.out.println();
         System.out.println("Version: 2024-1.2.0-BETA");
         System.out.println("App started - listening on port 8080");
+        afterStartup();
     }
+
+    public void afterStartup() {
+        DatabaseController databaseController = databaseController();
+        databaseController.generateDBIfNecessary();
+    }
+
 }
 

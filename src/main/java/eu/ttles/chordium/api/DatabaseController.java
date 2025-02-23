@@ -100,6 +100,30 @@ public class DatabaseController {
         }
     }
 
+    public void generateDBIfNecessary()  {
+        //create ChordNotationCreator object to get info about chord
+        try {
+            //create sql request
+            String sql = "SELECT * FROM chords LIMIT 1";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            //execute sql
+            ResultSet rs = stmt.executeQuery();
+
+            //if there are 1 or more records
+            if(!rs.isBeforeFirst()){
+                System.out.println("database not created - generating now");
+                DatabaseGenerator generator = new DatabaseGenerator();
+                generator.generateDatabase();
+            }else{
+                System.out.println("database already generated");
+            }
+
+        }catch (Exception e) {
+            System.out.println("Error reading database: " + e.getMessage());
+        }
+
+    }
+
     private  ArrayList<Map<String, Object>> generateChordMapResponse (ResultSet rs) throws SQLException {
         //create chords response body
         ArrayList<Map<String, Object>> transposedChords = new ArrayList<>();
