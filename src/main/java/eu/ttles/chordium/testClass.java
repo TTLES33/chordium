@@ -120,49 +120,45 @@ public class testClass {
             }
         }catch (Exception e){
             System.out.println("error");
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.err.println(e.getMessage() );
         }
     }
     public static void main(String[] args) {
 
+
+
+
+
+//
+        String base = "C";
+        String type = "maj";
+
+
+        int numberOfFrets = 12;
+
+        String tuning = "EADGBE";
+
+        int numberOfStrings = tuning.length();
         ChordFinder chordFinder = new ChordFinder();
-      //  getAllChordsInfo(chordFinder);
-        insertChordTypesIntoDB(chordFinder);
 
 
+        ArrayList<String> tuningList = new ArrayList<>();
+        for (int i = 0; i < tuning.length(); i++) {
+            tuningList.add(String.valueOf(tuning.charAt(i)));
+            //look for sharp values
+            if(i != tuning.length() - 1) {
+                if(tuning.charAt(i+1) == '#') {
+                    int tuningListSize = tuningList.size();
+                    tuningList.set(tuningListSize - 1, tuningList.get(tuningListSize - 1) + '#');
+                    i++;
+                }
+            }
 
-
-
-//
-//        String base = "C";
-//        String type = "maj";
-//
-//
-//        int numberOfFrets = 12;
-//
-//        String tuning = "EADGBEEADGEECG";
-//
-//        int numberOfStrings = tuning.length();
-//        ChordFinder chordFinder = new ChordFinder();
-//
-//
-//        ArrayList<String> tuningList = new ArrayList<>();
-//        for (int i = 0; i < tuning.length(); i++) {
-//            tuningList.add(String.valueOf(tuning.charAt(i)));
-//            //look for sharp values
-//            if(i != tuning.length() - 1) {
-//                if(tuning.charAt(i+1) == '#') {
-//                    int tuningListSize = tuningList.size();
-//                    tuningList.set(tuningListSize - 1, tuningList.get(tuningListSize - 1) + '#');
-//                    i++;
-//                }
-//            }
-//
-//        }
-//        System.out.println("tuningList: " + tuningList);
-//        chordFinder.findChord(base, type, numberOfStrings, numberOfFrets, tuningList, 4,4);
-//        System.out.println("---------");
-//        System.out.println(chordFinder.getTransposedChords());
+        }
+        System.out.println("tuningList: " + tuningList);
+        chordFinder.findChord(base, type, numberOfStrings, numberOfFrets, tuningList, 4,4);
+        System.out.println("---------");
+        System.out.println(chordFinder.getTransposedChords());
 //
 //        System.out.println("---------");
 
