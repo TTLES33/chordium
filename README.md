@@ -5,7 +5,7 @@
 > Api server for [chordium web client](https://github.com/TTLES33/chordium-client)
 
 Java api for finding all chord positions on guitar or other string instrument.
-Chordium web client is available on: [chordium.ttles.eu](https://github.com/TTLES33/chordium)
+Chordium web client is available on: [chordium.ttles.eu](https://chordium.ttles.eu/)
 
 
 ## Features:
