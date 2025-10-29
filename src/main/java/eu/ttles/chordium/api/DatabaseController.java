@@ -137,7 +137,7 @@ public class DatabaseController {
 
             // Remove the brackets and spaces
             String cleanedChordPositions = chordPositionsString.replaceAll("[\\[\\]\\s]", "");
-            String cleanedBarres = barres.replaceAll("^\\[\\{|\\}\\]$", "");
+            String cleanedBarres = barres.replaceAll("^\\{|\\}$", "");
 
 
             // Split the string by comma

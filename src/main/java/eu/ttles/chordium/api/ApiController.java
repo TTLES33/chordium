@@ -113,7 +113,7 @@ public class ApiController {
         } catch (IOException e){
             e.printStackTrace();
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage() + " " + e.getLocalizedMessage());
         }
 
         //calculate time elapsed

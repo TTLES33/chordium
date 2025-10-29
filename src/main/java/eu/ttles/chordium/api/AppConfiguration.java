@@ -32,7 +32,7 @@ public class AppConfiguration {
         System.out.println("| \\__/\\| | | || (_) || |   | (_| || || |_| || | | | | |");
         System.out.println(" \\____/|_| |_| \\___/ |_|    \\__,_||_| \\__,_||_| |_| |_|");
         System.out.println();
-        System.out.println("Version: 2024-1.2.0-BETA");
+        System.out.println("Version: 2024-1.2.10-BETA");
         System.out.println("App started - listening on port 8080");
         afterStartup();
     }
